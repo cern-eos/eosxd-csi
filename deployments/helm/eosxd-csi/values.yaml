@@ -1,0 +1,397 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+extraSecrets:
+  eos-csi-file-etc-eos-keytab:
+    stringData:
+      eos.keytab: |
+        0 u:eosnobody g:def-cg n:eosnobody N:6752069312392986625 c:1572088644 e:0 f:0 k:ea3d35d2dd64ad4794a2e2f7499fd3c45e0e8a590b0c4ff8a2049cbec244636c
+
+# Extra ConfigMaps to create and manage by the chart release.
+# These can be used e.g. when defining eosxd client configuration.
+# ConfigMap data supports go-template expressions.
+extraConfigMaps:
+  eos-csi-dir-etc-auto-master-d:
+    eos.autofs: |
+      /eos /etc/auto.eos
+  eos-csi-file-etc-auto-eos:
+    auto.eos: |
+      ams -fstype=eosx,fsname=ams  :eosxd
+      atlas -fstype=eosx,fsname=atlas  :eosxd
+      cms -fstype=eosx,fsname=cms  :eosxd
+      experiment -fstype=eosx,fsname=experiment  :eosxd
+      geant4 -fstype=eosx,fsname=geant4  :eosxd
+      lhcb -fstype=eosx,fsname=lhcb  :eosxd
+      project -fstype=eosx,fsname=project  :eosxd
+      theory -fstype=eosx,fsname=theory  :eosxd
+      user -fstype=eosx,fsname=user  :eosxd
+      web -fstype=eosx,fsname=web  :eosxd
+      workspace -fstype=eosx,fsname=workspace  :eosxd
+      home-a -fstype=eosx,fsname=home-a  :eosxd
+      home-b -fstype=eosx,fsname=home-b  :eosxd
+      home-c -fstype=eosx,fsname=home-c  :eosxd
+      home-d -fstype=eosx,fsname=home-d  :eosxd
+      home-e -fstype=eosx,fsname=home-e  :eosxd
+      home-f -fstype=eosx,fsname=home-f  :eosxd
+      home-g -fstype=eosx,fsname=home-g  :eosxd
+      home-h -fstype=eosx,fsname=home-h  :eosxd
+      home-i -fstype=eosx,fsname=home-i  :eosxd
+      home-j -fstype=eosx,fsname=home-j  :eosxd
+      home-k -fstype=eosx,fsname=home-k  :eosxd
+      home-l -fstype=eosx,fsname=home-l  :eosxd
+      home-m -fstype=eosx,fsname=home-m  :eosxd
+      home-n -fstype=eosx,fsname=home-n  :eosxd
+      home-o -fstype=eosx,fsname=home-o  :eosxd
+      home-p -fstype=eosx,fsname=home-p  :eosxd
+      home-q -fstype=eosx,fsname=home-q  :eosxd
+      home-r -fstype=eosx,fsname=home-r  :eosxd
+      home-s -fstype=eosx,fsname=home-s  :eosxd
+      home-t -fstype=eosx,fsname=home-t  :eosxd
+      home-u -fstype=eosx,fsname=home-u  :eosxd
+      home-v -fstype=eosx,fsname=home-v  :eosxd
+      home-w -fstype=eosx,fsname=home-w  :eosxd
+      home-x -fstype=eosx,fsname=home-x  :eosxd
+      home-y -fstype=eosx,fsname=home-y  :eosxd
+      home-z -fstype=eosx,fsname=home-z  :eosxd
+      project-a -fstype=eosx,fsname=project-a  :eosxd
+      project-b -fstype=eosx,fsname=project-b  :eosxd
+      project-c -fstype=eosx,fsname=project-c  :eosxd
+      project-d -fstype=eosx,fsname=project-d  :eosxd
+      project-e -fstype=eosx,fsname=project-e  :eosxd
+      project-f -fstype=eosx,fsname=project-f  :eosxd
+      project-g -fstype=eosx,fsname=project-g  :eosxd
+      project-h -fstype=eosx,fsname=project-h  :eosxd
+      project-i -fstype=eosx,fsname=project-i  :eosxd
+      project-j -fstype=eosx,fsname=project-j  :eosxd
+      project-k -fstype=eosx,fsname=project-k  :eosxd
+      project-l -fstype=eosx,fsname=project-l  :eosxd
+      project-m -fstype=eosx,fsname=project-m  :eosxd
+      project-n -fstype=eosx,fsname=project-n  :eosxd
+      project-o -fstype=eosx,fsname=project-o  :eosxd
+      project-p -fstype=eosx,fsname=project-p  :eosxd
+      project-q -fstype=eosx,fsname=project-q  :eosxd
+      project-r -fstype=eosx,fsname=project-r  :eosxd
+      project-s -fstype=eosx,fsname=project-s  :eosxd
+      project-t -fstype=eosx,fsname=project-t  :eosxd
+      project-u -fstype=eosx,fsname=project-u  :eosxd
+      project-v -fstype=eosx,fsname=project-v  :eosxd
+      project-w -fstype=eosx,fsname=project-w  :eosxd
+      project-x -fstype=eosx,fsname=project-x  :eosxd
+      project-y -fstype=eosx,fsname=project-y  :eosxd
+      project-z -fstype=eosx,fsname=project-z  :eosxd
+  eos-csi-dir-etc-eos:
+    fuse.conf: |
+      {"auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.ams.conf: |
+      {"name":"ams","hostport":"eosams.cern.ch","remotemountdir":"/eos/ams/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.atlas.conf: |
+      {"name":"atlas","hostport":"eosatlas.cern.ch","remotemountdir":"/eos/atlas/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.cms.conf: |
+      {"name":"cms","hostport":"eoscms.cern.ch","remotemountdir":"/eos/cms/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.experiment.conf: |
+      {"name":"experiment","hostport":"eospublic.cern.ch","remotemountdir":"/eos/experiment/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.geant4.conf: |
+      {"name":"geant4","hostport":"eospublic.cern.ch","remotemountdir":"/eos/geant4/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-a.conf: |
+      {"name":"home-a","hostport":"eoshome-a.cern.ch","remotemountdir":"/eos/user/a/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-b.conf: |
+      {"name":"home-b","hostport":"eoshome-b.cern.ch","remotemountdir":"/eos/user/b/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-c.conf: |
+      {"name":"home-c","hostport":"eoshome-c.cern.ch","remotemountdir":"/eos/user/c/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-d.conf: |
+      {"name":"home-d","hostport":"eoshome-d.cern.ch","remotemountdir":"/eos/user/d/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-e.conf: |
+      {"name":"home-e","hostport":"eoshome-e.cern.ch","remotemountdir":"/eos/user/e/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-f.conf: |
+      {"name":"home-f","hostport":"eoshome-f.cern.ch","remotemountdir":"/eos/user/f/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-g.conf: |
+      {"name":"home-g","hostport":"eoshome-g.cern.ch","remotemountdir":"/eos/user/g/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-h.conf: |
+      {"name":"home-h","hostport":"eoshome-h.cern.ch","remotemountdir":"/eos/user/h/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-i.conf: |
+      {"name":"home-i","hostport":"eoshome-i.cern.ch","remotemountdir":"/eos/user/i/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-j.conf: |
+      {"name":"home-j","hostport":"eoshome-j.cern.ch","remotemountdir":"/eos/user/j/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-k.conf: |
+      {"name":"home-k","hostport":"eoshome-k.cern.ch","remotemountdir":"/eos/user/k/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-l.conf: |
+      {"name":"home-l","hostport":"eoshome-l.cern.ch","remotemountdir":"/eos/user/l/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-m.conf: |
+      {"name":"home-m","hostport":"eoshome-m.cern.ch","remotemountdir":"/eos/user/m/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-n.conf: |
+      {"name":"home-n","hostport":"eoshome-n.cern.ch","remotemountdir":"/eos/user/n/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-o.conf: |
+      {"name":"home-o","hostport":"eoshome-o.cern.ch","remotemountdir":"/eos/user/o/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-p.conf: |
+      {"name":"home-p","hostport":"eoshome-p.cern.ch","remotemountdir":"/eos/user/p/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-q.conf: |
+      {"name":"home-q","hostport":"eoshome-q.cern.ch","remotemountdir":"/eos/user/q/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-r.conf: |
+      {"name":"home-r","hostport":"eoshome-r.cern.ch","remotemountdir":"/eos/user/r/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-s.conf: |
+      {"name":"home-s","hostport":"eoshome-s.cern.ch","remotemountdir":"/eos/user/s/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-t.conf: |
+      {"name":"home-t","hostport":"eoshome-t.cern.ch","remotemountdir":"/eos/user/t/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-u.conf: |
+      {"name":"home-u","hostport":"eoshome-u.cern.ch","remotemountdir":"/eos/user/u/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-v.conf: |
+      {"name":"home-v","hostport":"eoshome-v.cern.ch","remotemountdir":"/eos/user/v/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-w.conf: |
+      {"name":"home-w","hostport":"eoshome-w.cern.ch","remotemountdir":"/eos/user/w/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-x.conf: |
+      {"name":"home-x","hostport":"eoshome-x.cern.ch","remotemountdir":"/eos/user/x/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-y.conf: |
+      {"name":"home-y","hostport":"eoshome-y.cern.ch","remotemountdir":"/eos/user/y/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.home-z.conf: |
+      {"name":"home-z","hostport":"eoshome-z.cern.ch","remotemountdir":"/eos/user/z/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.lhcb.conf: |
+      {"name":"lhcb","hostport":"eoslhcb.cern.ch","remotemountdir":"/eos/lhcb/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-a.conf: |
+      {"name":"project-a","hostport":"eosproject-a.cern.ch","remotemountdir":"/eos/project/a/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-b.conf: |
+      {"name":"project-b","hostport":"eosproject-b.cern.ch","remotemountdir":"/eos/project/b/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-c.conf: |
+      {"name":"project-c","hostport":"eosproject-c.cern.ch","remotemountdir":"/eos/project/c/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project.conf: |
+      {"name":"project","hostport":"eosproject-fuse.cern.ch","remotemountdir":"/eos/project/","rm-rf-protect-levels":1,"auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-d.conf: |
+      {"name":"project-d","hostport":"eosproject-d.cern.ch","remotemountdir":"/eos/project/d/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-e.conf: |
+      {"name":"project-e","hostport":"eosproject-e.cern.ch","remotemountdir":"/eos/project/e/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-f.conf: |
+      {"name":"project-f","hostport":"eosproject-f.cern.ch","remotemountdir":"/eos/project/f/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-g.conf: |
+      {"name":"project-g","hostport":"eosproject-g.cern.ch","remotemountdir":"/eos/project/g/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-h.conf: |
+      {"name":"project-h","hostport":"eosproject-h.cern.ch","remotemountdir":"/eos/project/h/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-i.conf: |
+      {"name":"project-i","hostport":"eosproject-i.cern.ch","remotemountdir":"/eos/project/i/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-j.conf: |
+      {"name":"project-j","hostport":"eosproject-j.cern.ch","remotemountdir":"/eos/project/j/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-k.conf: |
+      {"name":"project-k","hostport":"eosproject-k.cern.ch","remotemountdir":"/eos/project/k/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-l.conf: |
+      {"name":"project-l","hostport":"eosproject-l.cern.ch","remotemountdir":"/eos/project/l/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-m.conf: |
+      {"name":"project-m","hostport":"eosproject-m.cern.ch","remotemountdir":"/eos/project/m/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-n.conf: |
+      {"name":"project-n","hostport":"eosproject-n.cern.ch","remotemountdir":"/eos/project/n/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-o.conf: |
+      {"name":"project-o","hostport":"eosproject-o.cern.ch","remotemountdir":"/eos/project/o/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-p.conf: |
+      {"name":"project-p","hostport":"eosproject-p.cern.ch","remotemountdir":"/eos/project/p/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-q.conf: |
+      {"name":"project-q","hostport":"eosproject-q.cern.ch","remotemountdir":"/eos/project/q/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-r.conf: |
+      {"name":"project-r","hostport":"eosproject-r.cern.ch","remotemountdir":"/eos/project/r/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-s.conf: |
+      {"name":"project-s","hostport":"eosproject-s.cern.ch","remotemountdir":"/eos/project/s/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-t.conf: |
+      {"name":"project-t","hostport":"eosproject-t.cern.ch","remotemountdir":"/eos/project/t/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-u.conf: |
+      {"name":"project-u","hostport":"eosproject-u.cern.ch","remotemountdir":"/eos/project/u/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-v.conf: |
+      {"name":"project-v","hostport":"eosproject-v.cern.ch","remotemountdir":"/eos/project/v/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-w.conf: |
+      {"name":"project-w","hostport":"eosproject-w.cern.ch","remotemountdir":"/eos/project/w/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-x.conf: |
+      {"name":"project-x","hostport":"eosproject-x.cern.ch","remotemountdir":"/eos/project/x/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-y.conf: |
+      {"name":"project-y","hostport":"eosproject-y.cern.ch","remotemountdir":"/eos/project/y/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.project-z.conf: |
+      {"name":"project-z","hostport":"eosproject-z.cern.ch","remotemountdir":"/eos/project/z/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.theory.conf: |
+      {"name":"theory","hostport":"eospublic.cern.ch","remotemountdir":"/eos/theory/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.user.conf: |
+      {"name":"user","hostport":"eosuser-fuse.cern.ch","remotemountdir":"/eos/user/","rm-rf-protect-levels":2,"auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.web.conf: |
+      {"name":"web","hostport":"eosmedia.cern.ch","remotemountdir":"/eos/web/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+    fuse.workspace.conf: |
+      {"name":"workspace","hostport":"eospublic.cern.ch","remotemountdir":"/eos/workspace/","auth": {"ssskeytab": "/etc/eos.keytab"}}
+
+# CSI Node plugin DaemonSet configuration.
+# Node plugin handles node-local operations, e.g. mounting and unmounting
+# eosxd repositories.
+nodeplugin:
+
+  # Component name. Used as `component` label value
+  # and to generate DaemonSet name.
+  name: nodeplugin
+
+  # Extra volumes to be appended to nodeplugin's Pod.spec.volumes.
+  extraVolumes:
+  - name: etc-eos
+    configMap:
+      name: eos-csi-dir-etc-eos
+  - name: etc-auto-eos
+    configMap:
+      name: eos-csi-file-etc-auto-eos
+  - name: etc-auto-master-d
+    configMap:
+      name: eos-csi-dir-etc-auto-master-d
+  - name: etc-eos-keytab
+    secret:
+      secretName: eos-csi-file-etc-eos-keytab
+      defaultMode: 0400
+
+  # eosxd CSI image and container resources specs.
+  plugin:
+    image:
+      repository: registry.cern.ch/magnum/eosxd-csi
+      tag: latest
+      pullPolicy: IfNotPresent
+    resources: {}
+
+  # eosxd CSI image and container resources specs.
+  automount:
+    image:
+      repository: registry.cern.ch/magnum/eosxd-csi
+      tag: latest
+      pullPolicy: IfNotPresent
+    resources: {}
+    # Extra volume mounts to append to nodeplugin's
+    # Pod.spec.containers[name="nodeplugin"].volumeMounts.
+    extraVolumeMounts:
+    - name: etc-eos
+      mountPath: /etc/eos
+    - name: etc-auto-eos
+      mountPath: /etc/auto.eos
+      subPath: auto.eos
+    - name: etc-auto-master-d
+      mountPath: /etc/auto.master.d
+    - name: etc-eos-keytab
+      mountPath: /etc/eos.keytab
+      subPath: eos.keytab
+
+  # csi-node-driver-registrar image and container resources specs.
+  registrar:
+    image:
+      repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
+      tag: v2.5.1
+      pullPolicy: IfNotPresent
+    resources: {}
+
+  # DaemonSet update strategy.
+  updateStrategySpec:
+    # When eosxd Node plugin Pod is restarted, all existing eosxd mounts on
+    # that node will break. If the Node plugin DaemonSet needs to be updated,
+    # all Pods that mount eosxd volumes on that node must be restarted (deleted)
+    # too in order to refresh the mounts.
+    type: OnDelete
+
+  # Pod priority class name.
+  priorityClassName: system-node-critical
+
+  # Pod node selector.
+  nodeSelector: {}
+
+  # Pod node tolerations.
+  tolerations: []
+
+  # Pod node affinity.
+  affinity: {}
+
+  # Pod's hostname must match the name of the host,
+  # otherwise SSS reports "IP address mismatch".
+  # This must be enabled when using OAuth2-based auth,
+  # as it relies on SSS.
+  hostNetwork: true
+
+# CSI Controller plugin Deployment configuration.
+# eosxd CSI supports volume provisioning, however the provisioned volumes only fulfill the role
+# of a reference to eosxd repositories used inside the CO (e.g. Kubernetes), and are not modifying
+# the eosxd store in any way.
+controllerplugin:
+
+  # Component name. Used as `component` label value
+  # and to generate DaemonSet name.
+  name: controllerplugin
+
+  # Number of Deployment replicas. In general, one is sufficient.
+  replicas: 1
+
+  extraVolumes: []
+
+  # eosxd CSI image and container resources specs.
+  plugin:
+    image:
+      repository: registry.cern.ch/magnum/eosxd-csi
+      tag: latest
+      pullPolicy: IfNotPresent
+    resources: {}
+    extraVolumeMounts: []
+
+  # CSI external-provisioner image and container resources specs.
+  provisioner:
+    image:
+      repository: k8s.gcr.io/sig-storage/csi-provisioner
+      tag: v3.2.1
+      pullPolicy: IfNotPresent
+    resources: {}
+
+  # Deployment update strategy.
+  deploymentStrategySpec:
+    type: RollingUpdate
+
+  # Pod priority class name.
+  priorityClassName: ""
+
+  # Pod node selector.
+  nodeSelector: {}
+
+  # Pod node tolerations.
+  tolerations: []
+
+  # Pod node affinity.
+  affinity: {}
+
+  # ServiceAccount to use with Controller plugin Deployment.
+  serviceAccount:
+
+    # Name of the ServiceAccount (to use and/or create).
+    # If no name is provided, Helm chart will generate one.
+    serviceAccountName: ""
+
+    # Whether to create ServiceAccount in the eosxd CSI namespace.
+    # If not, it is expected the ServiceAccount is already present.
+    create: true
+
+  # RBAC rules assigned to the ServiceAccount defined above.
+  rbac:
+
+    # Whether to create RBACs in the eosxd CSI namespace.
+    # If not, it is expected they are already present.
+    create: true
+
+# Log verbosity level.
+# See https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/logging.md
+# for description of individual verbosity levels.
+logVerbosityLevel: 5
+
+# eosxd CSI driver name used as driver identifier by Kubernetes.
+# Must follow DNS notation format (https://tools.ietf.org/html/rfc1035#section-2.3.1),
+# and must be 63 characters or less.
+csiDriverName: eosxd.csi.cern.ch
+
+# Kubelet's plugin directory path. By default, kubelet uses /var/lib/kubelet/plugins.
+# This value may need to be changed if kubelet's root dir (--root-dir) differs from
+# this default path.
+kubeletDirectory: /var/lib/kubelet
+
+# Name of the eosxd CSI socket file. eosxd CSI socket file will be stored under
+# <kubeletPluginDirectory>/plugins/<csiDriverName>/<csiPluginSocketFile>.
+csiPluginSocketFile: csi.sock
+
+# Number of seconds to wait for automount daemon to start up before exiting.
+automountDaemonStartupTimeout: 10
+# Number of seconds of idle time after which an autofs-managed eosxd mount will
+# be unmounted. '0' means never unmount, '-1' leaves automount default option.
+automountDaemonUnmountTimeout: 300
+
+# Chart name overrides.
+nameOverride: ""
+fullNameOverride: ""
+
+# Extra Kubernetes object metadata labels to be added the ones generated
+# with eosxd-csi.common.metaLabels template.
+extraMetaLabels: {}

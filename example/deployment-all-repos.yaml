@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eos-all
+  labels:
+    app: eos-all
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eos-all
+  template:
+    metadata:
+      labels:
+        app: eos-all
+    spec:
+      containers:
+       - name: idle
+         image: gitlab-registry.cern.ch/linuxsupport/cc7-base:latest
+         imagePullPolicy: IfNotPresent
+         command: [ "/bin/sh", "-c", "trap : TERM INT; (while true; do sleep 1000; done) & wait" ]
+         volumeMounts:
+           - name: eos
+             mountPath: /eos
+             mountPropagation: HostToContainer
+      volumes:
+       - name: eos
+         persistentVolumeClaim:
+           claimName: eos

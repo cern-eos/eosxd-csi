@@ -1,0 +1,151 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: {{ include "eosxd-csi.nodeplugin.fullname" . }}
+  labels:
+    {{- include "eosxd-csi.nodeplugin.labels" .  | nindent 4 }}
+spec:
+  updateStrategy: {{ toYaml .Values.nodeplugin.updateStrategySpec | nindent 4 }}
+  selector:
+    matchLabels:
+      {{- include "eosxd-csi.nodeplugin.matchLabels" .  | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "eosxd-csi.nodeplugin.labels" .  | nindent 8 }}
+    spec:
+      hostPID: true
+      hostNetwork: {{ .Values.nodeplugin.hostNetwork }}
+      containers:
+        - name: registrar
+          image: {{ .Values.nodeplugin.registrar.image.repository }}:{{ .Values.nodeplugin.registrar.image.tag }}
+          imagePullPolicy: {{ .Values.nodeplugin.registrar.image.pullPolicy }}
+          args:
+            - -v={{ .Values.logVerbosityLevel }}
+            - --csi-address=$(CSI_ADDRESS)
+            - --kubelet-registration-path=$(KUBELET_CSI_REGISTRATION_PATH)
+          env:
+            - name: CSI_ADDRESS
+              value: /csi/{{ .Values.csiPluginSocketFile }}
+            - name: KUBELET_CSI_REGISTRATION_PATH
+              value: {{ .Values.kubeletDirectory }}/plugins/{{ .Values.csiDriverName }}/{{ .Values.csiPluginSocketFile }}
+          volumeMounts:
+            - name: plugin-dir
+              mountPath: /csi
+            - name: registration-dir
+              mountPath: /registration
+          {{- with .Values.nodeplugin.registrar.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+          {{- end }}
+        - name: nodeplugin
+          image: {{ .Values.nodeplugin.plugin.image.repository }}:{{ .Values.nodeplugin.plugin.image.tag }}
+          command: [/csi-driver]
+          args:
+            - -v={{ .Values.logVerbosityLevel }}
+            - --nodeid=$(NODE_ID)
+            - --endpoint=$(CSI_ENDPOINT)
+            - --drivername=$(CSI_DRIVERNAME)
+            - --role=identity,node
+            - --automount-startup-timeout={{ .Values.automountDaemonStartupTimeout }}
+          imagePullPolicy: {{ .Values.nodeplugin.plugin.image.pullPolicy }}
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["SYS_ADMIN"]
+            allowPrivilegeEscalation: true
+          env:
+            - name: NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: CSI_ENDPOINT
+              value: unix://{{ .Values.kubeletDirectory }}/plugins/{{ .Values.csiDriverName }}/{{ .Values.csiPluginSocketFile }}
+            - name: CSI_DRIVERNAME
+              value: {{ .Values.csiDriverName }}
+          volumeMounts:
+            - name: plugin-dir
+              mountPath: {{ .Values.kubeletDirectory }}/plugins/{{ .Values.csiDriverName }}
+            - name: pods-mount-dir
+              mountPath: /var/lib/kubelet/pods
+              mountPropagation: Bidirectional
+            - mountPath: /sys
+              name: host-sys
+            - name: lib-modules
+              mountPath: /lib/modules
+              readOnly: true
+            - name: host-dev
+              mountPath: /dev
+            - name: autofs-eosxd
+              mountPath: /eos
+              mountPropagation: Bidirectional
+          {{- with .Values.nodeplugin.plugin.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+          {{- end }}
+        - name: automount
+          image: {{ .Values.nodeplugin.automount.image.repository }}:{{ .Values.nodeplugin.automount.image.tag }}
+          command: [/automount-runner]
+          args:
+            - -v={{ .Values.logVerbosityLevel }}
+            - --unmount-timeout={{ .Values.automountDaemonUnmountTimeout }}
+          imagePullPolicy: {{ .Values.nodeplugin.plugin.image.pullPolicy }}
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["SYS_ADMIN"]
+            allowPrivilegeEscalation: true
+          volumeMounts:
+            - mountPath: /sys
+              name: host-sys
+            - name: lib-modules
+              mountPath: /lib/modules
+              readOnly: true
+            - name: host-dev
+              mountPath: /dev
+            - name: autofs-eosxd
+              mountPath: /eos
+              mountPropagation: Bidirectional
+            {{- with .Values.nodeplugin.automount.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.nodeplugin.plugin.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: plugin-dir
+          hostPath:
+            path: {{ .Values.kubeletDirectory }}/plugins/{{ .Values.csiDriverName }}
+            type: DirectoryOrCreate
+        - name: registration-dir
+          hostPath:
+            path: {{ .Values.kubeletDirectory }}/plugins_registry
+            type: DirectoryOrCreate
+        - name: pods-mount-dir
+          hostPath:
+            path: /var/lib/kubelet/pods
+            type: Directory
+        - name: host-sys
+          hostPath:
+            path: /sys
+        - name: lib-modules
+          hostPath:
+            path: /lib/modules
+        - name: host-dev
+          hostPath:
+            path: /dev
+        - name: autofs-eosxd
+          emptyDir: {}
+        {{- with .Values.nodeplugin.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeplugin.affinity }}
+      affinity: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeplugin.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeplugin.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeplugin.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}

@@ -1,0 +1,47 @@
+# Demo Pod that authenticates EOSxd with an OAuth2 token. Additioanlly,
+# a ConfigMap is deployed, containing the token file template.
+# See https://gitlab.cern.ch/kubernetes/security/oauth2-refresh-controller
+# for more info.
+
+# By default, EOSxd looks for the OAuth2 access token file (in the format
+# defined in the ConfigMap) in /tmp/oauthtk_<UID>. This is also the default
+# location where oauth2-refresh-controller injects the token.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oauth2-token-eos-template
+data:
+  template: "oauth2:$(ACCESS_TOKEN):auth.cern.ch/auth/realms/cern/protocol/openid-connect/userinfo"
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: eos-all-oauth2
+  annotations:
+    oauth2-refresh-controller.cern.ch/to-inject: |
+      [
+        {
+          "secretName": "hello-oauth2",
+          "container": "idle",
+          "owner": 0,
+          "templateConfigMapName": "oauth2-token-eos-template"
+        }
+      ]
+
+spec:
+  containers:
+  - name: idle
+    image: gitlab-registry.cern.ch/linuxsupport/cc7-base:latest
+    imagePullPolicy: IfNotPresent
+    command: [ "/bin/sh", "-c", "trap : TERM INT; (while true; do sleep 1000; done) & wait" ]
+    volumeMounts:
+    - name: eos
+      mountPath: /eos
+      mountPropagation: HostToContainer
+  volumes:
+  - name: eos
+    persistentVolumeClaim:
+      claimName: eos

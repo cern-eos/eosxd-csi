@@ -1,0 +1,11 @@
+{{- range $key, $value := .Values.extraConfigMaps }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $key }}
+  labels:
+    {{- include "eosxd-csi.common.metaLabels" $ | nindent 4 }}
+data:
+  {{- tpl (toYaml $value) $ | nindent 2 }}
+{{- end }}
