@@ -238,7 +238,7 @@ nodeplugin:
   plugin:
     image:
       repository: registry.cern.ch/magnum/eosxd-csi
-      tag: latest
+      tag: v1.0.0-rc.0
       pullPolicy: IfNotPresent
     resources: {}
 
@@ -246,7 +246,7 @@ nodeplugin:
   automount:
     image:
       repository: registry.cern.ch/magnum/eosxd-csi
-      tag: latest
+      tag: v1.0.0-rc.0
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -316,7 +316,7 @@ controllerplugin:
   plugin:
     image:
       repository: registry.cern.ch/magnum/eosxd-csi
-      tag: latest
+      tag: v1.0.0-rc.0
       pullPolicy: IfNotPresent
     resources: {}
     extraVolumeMounts: []
