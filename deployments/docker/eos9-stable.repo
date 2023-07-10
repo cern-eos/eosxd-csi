@@ -1,0 +1,7 @@
+[eos9-stable]
+name=EOS binaries from CERN Koji [stable]
+baseurl=http://linuxsoft.cern.ch/internal/repos/eos9-stable/$basearch/os
+enabled=1
+gpgcheck=False
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-koji file:///etc/pki/rpm-gpg/RPM-GPG-KEY-kojiv2
+priority=1

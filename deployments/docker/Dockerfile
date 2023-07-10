@@ -1,9 +1,16 @@
-FROM registry.cern.ch/magnum/eosd:5.1.5-1.1
+FROM gitlab-registry.cern.ch/linuxsupport/alma9-base:20230701-1
 
-LABEL description="EOSxd CSI Plugin"
+# Setup EOS repository.
+ADD deployments/docker/eos9-stable.repo /etc/yum.repos.d/eos9-stable.repo
+RUN yum install -y dnf-plugins-core epel-release \
+    && dnf config-manager --set-enabled crb
 
-RUN yum install -y autofs cern-eos-autofs     \
-    && yum clean all && rm -rf /var/cache/yum
+# Install the EOS client and autofs-related packages.
+RUN yum install -y --setopt=skip_missing_names_on_install=False \
+        eos-fusex-5.1.19                                        \
+        autofs                                                  \
+        cern-eos-autofs                                         \
+	&& yum clean all
 
 # eosxd-csi deployment with Helm should provide
 # its own autofs configuration. The files listed below
@@ -12,5 +19,26 @@ RUN rm /etc/auto.eos.main.misc    \
        /etc/auto.eos.main.project \
        /etc/auto.eos.main.user
 
-ADD bin/csi-driver /csi-driver
-ADD bin/automount-runner /automount-runner
+ARG TARGETARCH
+ARG RELEASE
+ARG GITREF
+ARG CREATED
+
+LABEL description="EOSxd CSI Plugin" \
+      org.opencontainers.image.title="eosxd-csi" \
+      org.opencontainers.image.description="The EOSxd CSI image contains tools for exposing EOS instances through Container Storage Interface." \
+      org.opencontainers.image.authors="EOSxd CSI authors" \
+      org.opencontainers.image.vendor="EOSxd CSI authors" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.documentation="https://gitlab.cern.ch/kubernetes/storage/eosxd-csi" \
+      org.opencontainers.image.source="https://gitlab.cern.ch/kubernetes/storage/eosxd-csi" \
+      org.opencontainers.image.url="https://gitlab.cern.ch/kubernetes/storage/eosxd-csi" \
+      org.opencontainers.image.revision=${GITREF} \
+      org.opencontainers.image.version=${RELEASE} \
+      org.opencontainers.image.created=${CREATED} \
+      org.opencontainers.image.ref.name="" \
+      org.opencontainers.image.base.digest="" \
+      org.opencontainers.image.base.name=""
+
+ADD bin/linux-${TARGETARCH}/csi-driver /csi-driver
+ADD bin/linux-${TARGETARCH}/automount-runner /automount-runner
