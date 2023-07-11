@@ -15,15 +15,15 @@ spec:
         app: eos-all
     spec:
       containers:
-       - name: idle
-         image: gitlab-registry.cern.ch/linuxsupport/cc7-base:latest
-         imagePullPolicy: IfNotPresent
-         command: [ "/bin/sh", "-c", "trap : TERM INT; (while true; do sleep 1000; done) & wait" ]
-         volumeMounts:
-           - name: eos
-             mountPath: /eos
-             mountPropagation: HostToContainer
+      - name: idle
+        image: gitlab-registry.cern.ch/linuxsupport/alma9-base:latest
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/sh", "-c", "trap : TERM INT; (while true; do sleep 1000; done) & wait" ]
+        volumeMounts:
+        - name: eos
+          mountPath: /eos
+          mountPropagation: HostToContainer
       volumes:
-       - name: eos
-         persistentVolumeClaim:
-           claimName: eos
+      - name: eos
+        persistentVolumeClaim:
+          claimName: eos

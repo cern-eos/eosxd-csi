@@ -103,7 +103,7 @@ extraConfigMaps:
 
   eos-csi-dir-etc-eos:
     fuse.conf: |
-      {"auth":{"ssskeytab": "/etc/eos.keytab"}}
+      {"auth":{"ssskeytab":"/etc/eos.keytab"}}
     fuse.ams.conf: |
       {"name":"ams","hostport":"eosams.cern.ch","remotemountdir":"/eos/ams/","auth":{"ssskeytab":"/etc/eos.keytab"}}
     fuse.atlas.conf: |
@@ -156,6 +156,13 @@ nodeplugin:
 
   # Extra volumes to be appended to nodeplugin's Pod.spec.volumes.
   extraVolumes:
+  - name: host-var-eos
+    hostPath:
+      path: /var/eos
+      type: DirectoryOrCreate
+  - name: host-var-cache
+    hostPath:
+      path: /var/cache
   - name: etc-eos
     configMap:
       name: eos-csi-dir-etc-eos
@@ -177,6 +184,12 @@ nodeplugin:
       tag: latest
       pullPolicy: IfNotPresent
     resources: {}
+    # Extra volume mounts to append to nodeplugin's
+    # Pod.spec.containers[name="nodeplugin"].volumeMounts.
+    extraVolumeMounts:
+    - name: host-var-eos
+      mountPath: /eos
+      mountPropagation: Bidirectional
 
   # eosxd CSI image and container resources specs.
   automount:
@@ -186,8 +199,13 @@ nodeplugin:
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
-    # Pod.spec.containers[name="nodeplugin"].volumeMounts.
+    # Pod.spec.containers[name="automount"].volumeMounts.
     extraVolumeMounts:
+    - name: host-var-eos
+      mountPath: /eos
+      mountPropagation: Bidirectional
+    - name: host-var-cache
+      mountPath: /var/cache
     - name: etc-eos
       mountPath: /etc/eos
     - name: etc-auto-eos
