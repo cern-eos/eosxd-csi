@@ -178,7 +178,7 @@ func setupNodeServiceRole(s *grpcServer, d *Driver) error {
 		func() (bool, error) { return automount.IsAutofs("/eos") },
 	)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to check for autofs in /eos: %v", err)
 	}
 
 	// We can register node server now.

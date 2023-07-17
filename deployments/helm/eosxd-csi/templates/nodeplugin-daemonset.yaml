@@ -34,6 +34,9 @@ spec:
               mountPath: /csi
             - name: registration-dir
               mountPath: /registration
+            {{- with .Values.nodeplugin.registrar.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- with .Values.nodeplugin.registrar.resources }}
           resources: {{ toYaml . | nindent 12 }}
           {{- end }}
@@ -75,9 +78,9 @@ spec:
               readOnly: true
             - name: host-dev
               mountPath: /dev
-            - name: autofs-eosxd
-              mountPath: /eos
-              mountPropagation: Bidirectional
+            {{- with .Values.nodeplugin.plugin.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- with .Values.nodeplugin.plugin.resources }}
           resources: {{ toYaml . | nindent 12 }}
           {{- end }}
@@ -87,7 +90,7 @@ spec:
           args:
             - -v={{ .Values.logVerbosityLevel }}
             - --unmount-timeout={{ .Values.automountDaemonUnmountTimeout }}
-          imagePullPolicy: {{ .Values.nodeplugin.plugin.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.nodeplugin.automount.image.pullPolicy }}
           securityContext:
             privileged: true
             capabilities:
@@ -101,13 +104,10 @@ spec:
               readOnly: true
             - name: host-dev
               mountPath: /dev
-            - name: autofs-eosxd
-              mountPath: /eos
-              mountPropagation: Bidirectional
             {{- with .Values.nodeplugin.automount.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          {{- with .Values.nodeplugin.plugin.resources }}
+          {{- with .Values.nodeplugin.automount.resources }}
           resources: {{ toYaml . | nindent 12 }}
           {{- end }}
       volumes:
@@ -132,8 +132,6 @@ spec:
         - name: host-dev
           hostPath:
             path: /dev
-        - name: autofs-eosxd
-          emptyDir: {}
         {{- with .Values.nodeplugin.extraVolumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
