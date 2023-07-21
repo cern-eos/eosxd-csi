@@ -89,11 +89,15 @@ $(BINDIR)/csi-driver: $(SRC)
 $(BINDIR)/automount-runner: $(SRC)
 	go build $(GOFLAGS) -tags '$(TAGS)' -ldflags '$(LDFLAGS)' -o $@ ./cmd/automount-runner
 
+$(BINDIR)/mount-reconciler: $(SRC)
+	go build $(GOFLAGS) -tags '$(TAGS)' -ldflags '$(LDFLAGS)' -o $@ ./cmd/mount-reconciler
+
 .PHONY: build-cross
 build-cross: LDFLAGS += -extldflags "-static"
 build-cross: $(GOX) $(SRC)
 	CGO_ENABLED=0 $(GOX) -parallel=$(GOX_PARALLEL) -output="$(BINDIR)/{{.OS}}-{{.Arch}}/csi-driver" -osarch='$(TARGETS)' $(GOFLAGS) -tags '$(TAGS)' -ldflags '$(LDFLAGS)' ./cmd/csi-driver
 	CGO_ENABLED=0 $(GOX) -parallel=$(GOX_PARALLEL) -output="$(BINDIR)/{{.OS}}-{{.Arch}}/automount-runner" -osarch='$(TARGETS)' $(GOFLAGS) -tags '$(TAGS)' -ldflags '$(LDFLAGS)' ./cmd/automount-runner
+	CGO_ENABLED=0 $(GOX) -parallel=$(GOX_PARALLEL) -output="$(BINDIR)/{{.OS}}-{{.Arch}}/mount-reconciler" -osarch='$(TARGETS)' $(GOFLAGS) -tags '$(TAGS)' -ldflags '$(LDFLAGS)' ./cmd/mount-reconciler
 
 # ------------------------------------------------------------------------------
 #  image

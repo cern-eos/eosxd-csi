@@ -110,6 +110,32 @@ spec:
           {{- with .Values.nodeplugin.automount.resources }}
           resources: {{ toYaml . | nindent 12 }}
           {{- end }}
+        - name: mountreconciler
+          image: {{ .Values.nodeplugin.mountreconciler.image.repository }}:{{ .Values.nodeplugin.mountreconciler.image.tag }}
+          command: [/mount-reconciler]
+          args:
+            - -v={{ .Values.logVerbosityLevel }}
+            - --frequency={{ .Values.reconcileMountsFrequency }}
+          imagePullPolicy: {{ .Values.nodeplugin.mountreconciler.image.pullPolicy }}
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["SYS_ADMIN"]
+            allowPrivilegeEscalation: true
+          volumeMounts:
+            - mountPath: /sys
+              name: host-sys
+            - name: lib-modules
+              mountPath: /lib/modules
+              readOnly: true
+            - name: host-dev
+              mountPath: /dev
+            {{- with .Values.nodeplugin.mountreconciler.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.nodeplugin.mountreconciler.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+          {{- end }}
       volumes:
         - name: plugin-dir
           hostPath:

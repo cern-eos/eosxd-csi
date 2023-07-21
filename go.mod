@@ -1,10 +1,12 @@
 module gitlab.cern.ch/kubernetes/storage/eosxd-csi
 
-go 1.17
+go 1.20
 
 require (
 	github.com/container-storage-interface/spec v1.6.0
+	github.com/davecgh/go-spew v1.1.1
 	github.com/kubernetes-csi/csi-lib-utils v0.11.0
+	github.com/moby/sys/mountinfo v0.6.2
 	google.golang.org/grpc v1.47.0
 	k8s.io/apimachinery v0.24.2
 	k8s.io/klog/v2 v2.60.1
@@ -15,7 +17,7 @@ require (
 	github.com/go-logr/logr v1.2.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
-	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
+	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
