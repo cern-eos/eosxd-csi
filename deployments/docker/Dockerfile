@@ -42,3 +42,4 @@ LABEL description="EOSxd CSI Plugin" \
 
 ADD bin/linux-${TARGETARCH}/csi-driver /csi-driver
 ADD bin/linux-${TARGETARCH}/automount-runner /automount-runner
+ADD bin/linux-${TARGETARCH}/mount-reconciler /mount-reconciler

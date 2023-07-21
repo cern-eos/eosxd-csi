@@ -180,9 +180,9 @@ nodeplugin:
   # eosxd CSI image and container resources specs.
   plugin:
     image:
-      repository: registry.cern.ch/magnum/eosxd-csi
-      tag: latest
-      pullPolicy: IfNotPresent
+      repository: registry.cern.ch/rvasek/eosxd-csi
+      tag: dirty
+      pullPolicy: Always
     resources: {}
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="nodeplugin"].volumeMounts.
@@ -194,9 +194,9 @@ nodeplugin:
   # eosxd CSI image and container resources specs.
   automount:
     image:
-      repository: registry.cern.ch/magnum/eosxd-csi
-      tag: latest
-      pullPolicy: IfNotPresent
+      repository: registry.cern.ch/rvasek/eosxd-csi
+      tag: dirty
+      pullPolicy: Always
     resources: {}
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="automount"].volumeMounts.
@@ -216,6 +216,20 @@ nodeplugin:
     - name: etc-eos-keytab
       mountPath: /etc/eos.keytab
       subPath: eos.keytab
+
+  mountreconciler:
+    image:
+      repository: registry.cern.ch/rvasek/eosxd-csi
+      tag: dirty
+      pullPolicy: Always
+    resources: {}
+    frequency: 5s
+    # Extra volume mounts to append to nodeplugin's
+    # Pod.spec.containers[name="mountreconciler"].volumeMounts.
+    extraVolumeMounts:
+    - name: host-var-eos
+      mountPath: /eos
+      mountPropagation: Bidirectional
 
   # csi-node-driver-registrar image and container resources specs.
   registrar:
@@ -269,9 +283,9 @@ controllerplugin:
   # eosxd CSI image and container resources specs.
   plugin:
     image:
-      repository: registry.cern.ch/magnum/eosxd-csi
-      tag: latest
-      pullPolicy: IfNotPresent
+      repository: registry.cern.ch/rvasek/eosxd-csi
+      tag: dirty
+      pullPolicy: Always
     resources: {}
     extraVolumeMounts: []
 
@@ -341,6 +355,9 @@ automountDaemonStartupTimeout: 10
 # Number of seconds of idle time after which an autofs-managed eosxd mount will
 # be unmounted. '0' means never unmount, '-1' leaves automount default option.
 automountDaemonUnmountTimeout: 300
+
+# Reconcile broken /eos mounts in specified interval.
+reconcileMountsFrequency: 5s
 
 # Chart name overrides.
 nameOverride: ""
