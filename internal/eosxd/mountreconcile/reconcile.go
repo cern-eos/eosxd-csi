@@ -40,7 +40,7 @@ func RunBlocking(o *Opts) error {
 	for {
 		select {
 		case <-t.C:
-			log.Debugf("Reconciling /eos")
+			log.Tracef("Reconciling /eos")
 			if err := reconcile(); err != nil {
 				log.Errorf("Failed to reconcile /eos: %v", err)
 			}
@@ -190,8 +190,8 @@ func reconcile() error {
 		return err
 	}
 
-	log.Debugf("EOSxd mounts known to kernel: %v", knownEosMounts)
-	log.Debugf("eosxd processes running for mounts: %v", realEosMounts)
+	log.Tracef("EOSxd mounts known to kernel: %v", knownEosMounts)
+	log.Tracef("eosxd processes running for mounts: %v", realEosMounts)
 
 	// Make sure there is an eosxd process running for each known mount.
 	// If not, reconcile by unmounting. autofs will automatically remount when needed.

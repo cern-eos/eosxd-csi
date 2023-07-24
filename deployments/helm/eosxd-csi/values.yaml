@@ -180,9 +180,9 @@ nodeplugin:
   # eosxd CSI image and container resources specs.
   plugin:
     image:
-      repository: registry.cern.ch/rvasek/eosxd-csi
-      tag: dirty
-      pullPolicy: Always
+      repository: registry.cern.ch/kubernetes/eosxd-csi
+      tag: latest
+      pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="nodeplugin"].volumeMounts.
@@ -194,9 +194,9 @@ nodeplugin:
   # eosxd CSI image and container resources specs.
   automount:
     image:
-      repository: registry.cern.ch/rvasek/eosxd-csi
-      tag: dirty
-      pullPolicy: Always
+      repository: registry.cern.ch/kubernetes/eosxd-csi
+      tag: latest
+      pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="automount"].volumeMounts.
@@ -219,11 +219,10 @@ nodeplugin:
 
   mountreconciler:
     image:
-      repository: registry.cern.ch/rvasek/eosxd-csi
-      tag: dirty
-      pullPolicy: Always
+      repository: registry.cern.ch/kubernetes/eosxd-csi
+      tag: latest
+      pullPolicy: IfNotPresent
     resources: {}
-    frequency: 5s
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="mountreconciler"].volumeMounts.
     extraVolumeMounts:
@@ -283,9 +282,9 @@ controllerplugin:
   # eosxd CSI image and container resources specs.
   plugin:
     image:
-      repository: registry.cern.ch/rvasek/eosxd-csi
-      tag: dirty
-      pullPolicy: Always
+      repository: registry.cern.ch/kubernetes/eosxd-csi
+      tag: latest
+      pullPolicy: IfNotPresent
     resources: {}
     extraVolumeMounts: []
 
@@ -334,7 +333,7 @@ controllerplugin:
 # Log verbosity level.
 # See https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/logging.md
 # for description of individual verbosity levels.
-logVerbosityLevel: 5
+logVerbosityLevel: 4
 
 # eosxd CSI driver name used as driver identifier by Kubernetes.
 # Must follow DNS notation format (https://tools.ietf.org/html/rfc1035#section-2.3.1),
@@ -354,10 +353,10 @@ csiPluginSocketFile: csi.sock
 automountDaemonStartupTimeout: 10
 # Number of seconds of idle time after which an autofs-managed eosxd mount will
 # be unmounted. '0' means never unmount, '-1' leaves automount default option.
-automountDaemonUnmountTimeout: 300
+automountDaemonUnmountTimeout: 30
 
-# Reconcile broken /eos mounts in specified interval.
-reconcileMountsFrequency: 5s
+# Reconcile broken /eos/* mounts in specified interval.
+reconcileMountsFrequency: 10s
 
 # Chart name overrides.
 nameOverride: ""
