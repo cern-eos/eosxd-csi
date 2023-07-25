@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: eos-all
+  name: eos-all-hostpath
 spec:
   containers:
   - name: idle
@@ -14,5 +14,5 @@ spec:
       mountPropagation: HostToContainer
   volumes:
   - name: eos
-    persistentVolumeClaim:
-      claimName: eos
+    hostPath:
+      path: /var/eos

@@ -17,54 +17,11 @@
 package node
 
 import (
-	"bytes"
 	goexec "os/exec"
 
 	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/exec"
-
-	mount "k8s.io/mount-utils"
+	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/mountutils"
 )
-
-type (
-	mountState int
-)
-
-const (
-	msUnknown mountState = iota
-	msNotMounted
-	msMounted
-	msCorrupted
-)
-
-var (
-	dummyMounter = mount.New("")
-)
-
-func (ms mountState) String() string {
-	return [...]string{
-		"UNKNOWN",
-		"NOT_MOUNTED",
-		"MOUNTED",
-		"CORRUPTED",
-	}[int(ms)]
-}
-
-func getMountState(p string) (mountState, error) {
-	isNotMnt, err := mount.IsNotMountPoint(dummyMounter, p)
-	if err != nil {
-		if mount.IsCorruptedMnt(err) {
-			return msCorrupted, nil
-		}
-
-		return msUnknown, err
-	}
-
-	if !isNotMnt {
-		return msMounted, nil
-	}
-
-	return msNotMounted, nil
-}
 
 func bindMount(from, to string) error {
 	_, err := exec.CombinedOutput(goexec.Command("mount", "--bind", from, to))
@@ -95,22 +52,8 @@ func slaveRecursiveBind(from, to string) error {
 	return err
 }
 
-func unmount(mountpoint string, extraArgs ...string) error {
-	out, err := exec.CombinedOutput(goexec.Command("umount", append(extraArgs, mountpoint)...))
-	if err != nil {
-		// There are no well-defined exit codes for cases of "not mounted"
-		// and "doesn't exist". We need to check the output.
-		if bytes.HasSuffix(out, []byte(": not mounted")) ||
-			bytes.Contains(out, []byte("No such file or directory")) {
-			return nil
-		}
-	}
-
-	return err
-}
-
 func recursiveUnmount(mountpoint string) error {
 	// We need recursive unmount because there are live mounts inside the bindmount.
 	// Unmounting only the upper autofs mount would result in EBUSY.
-	return unmount(mountpoint, "--recursive")
+	return mountutils.Unmount(mountpoint, "--recursive")
 }

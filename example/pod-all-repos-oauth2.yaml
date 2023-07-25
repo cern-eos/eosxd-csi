@@ -34,7 +34,7 @@ metadata:
 spec:
   containers:
   - name: idle
-    image: gitlab-registry.cern.ch/linuxsupport/cc7-base:latest
+    image: gitlab-registry.cern.ch/linuxsupport/alma9-base:latest
     imagePullPolicy: IfNotPresent
     command: [ "/bin/sh", "-c", "trap : TERM INT; (while true; do sleep 1000; done) & wait" ]
     volumeMounts:

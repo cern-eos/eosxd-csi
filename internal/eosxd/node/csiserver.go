@@ -24,6 +24,7 @@ import (
 	"path"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
+	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/mountutils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -44,7 +45,7 @@ var (
 
 func New(nodeID string) *Server {
 	enabledCaps := []csi.NodeServiceCapability_RPC_Type{
-		// None.
+		csi.NodeServiceCapability_RPC_VOLUME_CONDITION,
 	}
 
 	var caps []*csi.NodeServiceCapability
@@ -97,24 +98,24 @@ func (srv *Server) NodePublishVolume(
 			"failed to create mountpoint directory at %s: %v", targetPath, err)
 	}
 
-	mntState, err := getMountState(targetPath)
+	mntState, err := mountutils.GetState(targetPath)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal,
 			"failed to probe mountpoint %s: %v", targetPath, err)
 	}
 
 	switch mntState {
-	case msNotMounted:
+	case mountutils.StNotMounted:
 		if err := doMount(req); err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to bind mount: %v", err)
 		}
 		fallthrough
-	case msMounted:
+	case mountutils.StMounted:
 		return &csi.NodePublishVolumeResponse{}, nil
 	default:
 		return nil, status.Errorf(codes.Internal,
 			"unexpected mountpoint state in %s: expected %s or %s, got %s",
-			targetPath, msNotMounted, msMounted, mntState)
+			targetPath, mountutils.StNotMounted, mountutils.StMounted, mntState)
 	}
 }
 
@@ -140,13 +141,17 @@ func (srv *Server) NodeUnpublishVolume(
 
 	targetPath := req.GetTargetPath()
 
-	mntState, err := getMountState(targetPath)
+	mntState, err := mountutils.GetState(targetPath)
 	if err != nil {
+		if os.IsNotExist(err) {
+			return &csi.NodeUnpublishVolumeResponse{}, nil
+		}
+
 		return nil, status.Errorf(codes.Internal,
 			"failed to probe for mountpoint %s: %v", targetPath, err)
 	}
 
-	if mntState != msNotMounted {
+	if mntState != mountutils.StNotMounted {
 		if err := recursiveUnmount(targetPath); err != nil {
 			return nil, status.Errorf(codes.Internal,
 				"failed to unmount %s: %v", targetPath, err)
@@ -179,7 +184,28 @@ func (srv *Server) NodeGetVolumeStats(
 	ctx context.Context,
 	req *csi.NodeGetVolumeStatsRequest,
 ) (*csi.NodeGetVolumeStatsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "")
+	if err := validateNodeGetVolumeStatsRequest(req); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	volPath := req.GetVolumePath()
+
+	st, err := mountutils.GetState(volPath)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get mount state for %s: %v", volPath, err)
+	}
+
+	switch st {
+	case mountutils.StMounted:
+		return &csi.NodeGetVolumeStatsResponse{}, nil
+	default:
+		return &csi.NodeGetVolumeStatsResponse{
+			VolumeCondition: &csi.VolumeCondition{
+				Abnormal: true,
+				Message:  fmt.Sprintf("mountpoint %s is %s", volPath, st),
+			},
+		}, nil
+	}
 }
 
 func (srv *Server) NodeExpandVolume(
@@ -187,6 +213,18 @@ func (srv *Server) NodeExpandVolume(
 	req *csi.NodeExpandVolumeRequest,
 ) (*csi.NodeExpandVolumeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "")
+}
+
+func validateNodeGetVolumeStatsRequest(req *csi.NodeGetVolumeStatsRequest) error {
+	if req.GetVolumeId() == "" {
+		return errors.New("volume ID missing in request")
+	}
+
+	if req.GetVolumePath() == "" {
+		return errors.New("volume path missing in request")
+	}
+
+	return nil
 }
 
 func validateNodePublishVolumeRequest(req *csi.NodePublishVolumeRequest) error {
