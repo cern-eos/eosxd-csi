@@ -1,3 +1,6 @@
+# Added by EOSxd CSI driver.
+# Koji repository with EOS packages.
+
 [eos9-stable]
 name=EOS binaries from CERN Koji [stable]
 baseurl=http://linuxsoft.cern.ch/internal/repos/eos9-stable/$basearch/os
