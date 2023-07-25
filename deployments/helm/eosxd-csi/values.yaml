@@ -181,7 +181,7 @@ nodeplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: latest
+      tag: v1.0.0-rc.1
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -195,7 +195,7 @@ nodeplugin:
   automount:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: latest
+      tag: v1.0.0-rc.1
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -220,7 +220,7 @@ nodeplugin:
   mountreconciler:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: latest
+      tag: v1.0.0-rc.1
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -283,7 +283,7 @@ controllerplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: latest
+      tag: v1.0.0-rc.1
       pullPolicy: IfNotPresent
     resources: {}
     extraVolumeMounts: []
@@ -353,7 +353,7 @@ csiPluginSocketFile: csi.sock
 automountDaemonStartupTimeout: 10
 # Number of seconds of idle time after which an autofs-managed eosxd mount will
 # be unmounted. '0' means never unmount, '-1' leaves automount default option.
-automountDaemonUnmountTimeout: 30
+automountDaemonUnmountTimeout: 300
 
 # Reconcile broken /eos/* mounts in specified interval.
 reconcileMountsFrequency: 10s
