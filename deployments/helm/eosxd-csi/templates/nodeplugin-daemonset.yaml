@@ -78,6 +78,9 @@ spec:
               readOnly: true
             - name: host-dev
               mountPath: /dev
+            - name: autofs-root
+              mountPath: /eos
+              mountPropagation: Bidirectional
             {{- with .Values.nodeplugin.plugin.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -104,6 +107,9 @@ spec:
               readOnly: true
             - name: host-dev
               mountPath: /dev
+            - name: autofs-root
+              mountPath: /eos
+              mountPropagation: Bidirectional
             {{- with .Values.nodeplugin.automount.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -130,6 +136,9 @@ spec:
               readOnly: true
             - name: host-dev
               mountPath: /dev
+            - name: autofs-root
+              mountPath: /eos
+              mountPropagation: Bidirectional
             {{- with .Values.nodeplugin.mountreconciler.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -158,6 +167,10 @@ spec:
         - name: host-dev
           hostPath:
             path: /dev
+        - name: autofs-root
+          hostPath:
+            path: {{ .Values.automountHostPath }}
+            type: DirectoryOrCreate
         {{- with .Values.nodeplugin.extraVolumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
