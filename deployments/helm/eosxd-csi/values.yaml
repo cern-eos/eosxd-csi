@@ -156,10 +156,6 @@ nodeplugin:
 
   # Extra volumes to be appended to nodeplugin's Pod.spec.volumes.
   extraVolumes:
-  - name: host-var-eos
-    hostPath:
-      path: /var/eos
-      type: DirectoryOrCreate
   - name: host-var-cache
     hostPath:
       path: /var/cache
@@ -186,10 +182,7 @@ nodeplugin:
     resources: {}
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="nodeplugin"].volumeMounts.
-    extraVolumeMounts:
-    - name: host-var-eos
-      mountPath: /eos
-      mountPropagation: Bidirectional
+    extraVolumeMounts: []
 
   # eosxd CSI image and container resources specs.
   automount:
@@ -201,9 +194,6 @@ nodeplugin:
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="automount"].volumeMounts.
     extraVolumeMounts:
-    - name: host-var-eos
-      mountPath: /eos
-      mountPropagation: Bidirectional
     - name: host-var-cache
       mountPath: /var/cache
     - name: etc-eos
@@ -225,10 +215,7 @@ nodeplugin:
     resources: {}
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="mountreconciler"].volumeMounts.
-    extraVolumeMounts:
-    - name: host-var-eos
-      mountPath: /eos
-      mountPropagation: Bidirectional
+    extraVolumeMounts: []
 
   # csi-node-driver-registrar image and container resources specs.
   registrar:
@@ -348,6 +335,10 @@ kubeletDirectory: /var/lib/kubelet
 # Name of the eosxd CSI socket file. eosxd CSI socket file will be stored under
 # <kubeletPluginDirectory>/plugins/<csiDriverName>/<csiPluginSocketFile>.
 csiPluginSocketFile: csi.sock
+
+# Path on the host where to mount the autofs-managed CVMFS root.
+# The directory will be created if it doesn't exist.
+automountHostPath: /var/eos
 
 # Number of seconds to wait for automount daemon to start up before exiting.
 automountDaemonStartupTimeout: 10
