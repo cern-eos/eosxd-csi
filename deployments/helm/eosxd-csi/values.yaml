@@ -37,11 +37,11 @@ extraConfigMaps:
       home-i03 -fstype=eosx,fsname=home-i03  :eosxd
       home-i04 -fstype=eosx,fsname=home-i04  :eosxd
 
-      home-d :home-i00/d
-      home-l :home-i00/l
-      home-n :home-i00/n
-      home-t :home-i00/t
-      home-z :home-i00/z
+      home-d :/eos/home-i00/d
+      home-l :/eos/home-i00/l
+      home-n :/eos/home-i00/n
+      home-t :/eos/home-i00/t
+      home-z :/eos/home-i00/z
 
       home-a :/eos/home-i01/a
       home-g :/eos/home-i01/g
@@ -177,7 +177,7 @@ nodeplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: latest
+      tag: v1.0.0
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -188,7 +188,7 @@ nodeplugin:
   automount:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: latest
+      tag: v1.0.0
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -210,7 +210,7 @@ nodeplugin:
   mountreconciler:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: latest
+      tag: v1.0.0
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -270,7 +270,7 @@ controllerplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: latest
+      tag: v1.0.0
       pullPolicy: IfNotPresent
     resources: {}
     extraVolumeMounts: []
