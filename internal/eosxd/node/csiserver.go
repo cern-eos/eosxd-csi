@@ -244,10 +244,8 @@ func validateNodePublishVolumeRequest(req *csi.NodePublishVolumeRequest) error {
 		return errors.New("volume access type must by Mount")
 	}
 
-	if req.GetVolumeCapability().GetAccessMode().GetMode() !=
-		csi.VolumeCapability_AccessMode_MULTI_NODE_MULTI_WRITER {
-		return fmt.Errorf("volume access mode must be ReadWriteMany")
-	}
+	// We're intentionally not validating volume access mode.
+	// This is for convenience, as some users are unable to set it.
 
 	return nil
 }

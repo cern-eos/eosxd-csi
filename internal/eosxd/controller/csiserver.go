@@ -267,9 +267,8 @@ func validateVolumeCapabilities(volCaps []*csi.VolumeCapability) error {
 			return errors.New("volume access mode cannot be nil")
 		}
 
-		if accessMode.GetMode() != csi.VolumeCapability_AccessMode_MULTI_NODE_READER_ONLY {
-			return errors.New("volume access mode must be MULTI_NODE_READER_ONLY (ReadOnlyMany)")
-		}
+		// We're intentionally not validating volume access mode.
+		// This is for convenience, as some users are unable to set it.
 	}
 
 	return nil
