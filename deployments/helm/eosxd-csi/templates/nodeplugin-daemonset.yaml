@@ -3,7 +3,7 @@ apiVersion: apps/v1
 metadata:
   name: {{ include "eosxd-csi.nodeplugin.fullname" . }}
   labels:
-    {{- include "eosxd-csi.nodeplugin.labels" .  | nindent 4 }}
+    {{- include "eosxd-csi.nodeplugin.metaLabels" .  | nindent 4 }}
 spec:
   updateStrategy: {{ toYaml .Values.nodeplugin.updateStrategySpec | nindent 4 }}
   selector:
@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "eosxd-csi.nodeplugin.labels" .  | nindent 8 }}
+        {{- include "eosxd-csi.nodeplugin.metaLabels" .  | nindent 8 }}
     spec:
       hostPID: true
       hostNetwork: {{ .Values.nodeplugin.hostNetwork }}
