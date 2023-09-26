@@ -251,6 +251,11 @@ nodeplugin:
   # as it relies on SSS.
   hostNetwork: true
 
+  # With host network enabled, DNS policy should be set to
+  # ClusterFirstWithHostNet. EOS client makes a lot of DNS
+  # queries, and they should go through cluster's DNS cache.
+  dnsPolicy: ClusterFirstWithHostNet
+
 # CSI Controller plugin Deployment configuration.
 # eosxd CSI supports volume provisioning, however the provisioned volumes only fulfill the role
 # of a reference to eosxd repositories used inside the CO (e.g. Kubernetes), and are not modifying
