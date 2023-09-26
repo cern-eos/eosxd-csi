@@ -16,6 +16,7 @@ spec:
     spec:
       hostPID: true
       hostNetwork: {{ .Values.nodeplugin.hostNetwork }}
+      dnsPolicy: {{ .Values.nodeplugin.dnsPolicy }}
       containers:
         - name: registrar
           image: {{ .Values.nodeplugin.registrar.image.repository }}:{{ .Values.nodeplugin.registrar.image.tag }}
