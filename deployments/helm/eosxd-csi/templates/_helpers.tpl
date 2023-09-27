@@ -82,50 +82,34 @@ Create the name of the service account to use for the node plugin.
 {{- end -}}
 
 {{/*
-Create unified labels for eosxd-csi components
+Create unified labels for manila-csi components
 */}}
 
-{{- define "eosxd-csi.common.metaLabels" -}}
-app.kubernetes.io/name: {{ template "eosxd-csi.name" . }}
-helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/version: {{ .Chart.AppVersion }}
-{{- if .Values.extraMetaLabels -}}
-{{ toYaml .Values.extraMetaLabels }}
-{{- end -}}
-{{- end -}}
-
 {{- define "eosxd-csi.common.matchLabels" -}}
-app.kubernetes.io/name: {{ template "eosxd-csi.name" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+app: {{ template "eosxd-csi.name" . }}
+release: {{ .Release.Name }}
 {{- end -}}
 
-{{- define "eosxd-csi.nodeplugin.metaLabels" -}}
-{{- if .Values.nodeplugin.metaLabelsOverride -}}
-{{ toYaml .Values.nodeplugin.metaLabelsOverride }}
-{{- else -}}
-app.kubernetes.io/component: nodeplugin
-{{ include "eosxd-csi.common.metaLabels" . }}
+{{- define "eosxd-csi.common.metaLabels" -}}
+chart: {{ template "eosxd-csi.chart" . }}
+heritage: {{ .Release.Service }}
+app: {{ template "eosxd-csi.name" . }}
+{{- if .Values.extraMetaLabels }}
+{{ toYaml .Values.extraMetaLabels }}
+{{- end }}
 {{- end -}}
+
+{{- define "eosxd-csi.common.labels" -}}
+{{ include "eosxd-csi.common.metaLabels" . }}
+{{ include "eosxd-csi.common.matchLabels" . }}
 {{- end -}}
 
 {{- define "eosxd-csi.nodeplugin.matchLabels" -}}
 {{- if .Values.nodeplugin.matchLabelsOverride -}}
 {{ toYaml .Values.nodeplugin.matchLabelsOverride }}
 {{- else -}}
-app.kubernetes.io/component: nodeplugin
+component: nodeplugin
 {{ include "eosxd-csi.common.matchLabels" . }}
-{{- end -}}
-{{- end -}}
-
-{{- define "eosxd-csi.controllerplugin.metaLabels" -}}
-{{- if .Values.controllerplugin.metaLabelsOverride -}}
-{{ toYaml .Values.controllerplugin.metaLabelsOverride }}
-{{- else -}}
-app.kubernetes.io/component: controllerplugin
-{{ include "eosxd-csi.common.metaLabels" . }}
 {{- end -}}
 {{- end -}}
 
@@ -133,7 +117,25 @@ app.kubernetes.io/component: controllerplugin
 {{- if .Values.controllerplugin.matchLabelsOverride -}}
 {{ toYaml .Values.controllerplugin.matchLabelsOverride }}
 {{- else -}}
-app.kubernetes.io/component: controllerplugin
+component: controllerplugin
 {{ include "eosxd-csi.common.matchLabels" . }}
+{{- end -}}
+{{- end -}}
+
+{{- define "eosxd-csi.nodeplugin.labels" -}}
+{{- if .Values.nodeplugin.labelsOverride -}}
+{{ .Values.nodeplugin.labelsOverride }}
+{{- else -}}
+{{ include "eosxd-csi.common.metaLabels" . }}
+{{ include "eosxd-csi.nodeplugin.matchLabels" . }}
+{{- end -}}
+{{- end -}}
+
+{{- define "eosxd-csi.controllerplugin.labels" -}}
+{{- if .Values.controllerplugin.labelsOverride -}}
+{{ .Values.controllerplugin.labelsOverride }}
+{{- else -}}
+{{ include "eosxd-csi.common.metaLabels" . }}
+{{ include "eosxd-csi.controllerplugin.matchLabels" . }}
 {{- end -}}
 {{- end -}}

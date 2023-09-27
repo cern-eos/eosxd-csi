@@ -3,7 +3,7 @@ apiVersion: apps/v1
 metadata:
   name: {{ include "eosxd-csi.controllerplugin.fullname" . }}
   labels:
-    {{- include "eosxd-csi.controllerplugin.metaLabels" .  | nindent 4 }}
+    {{- include "eosxd-csi.controllerplugin.labels" .  | nindent 4 }}
 spec:
   replicas: {{ .Values.controllerplugin.replicas }}
   strategy: {{ toYaml .Values.controllerplugin.deploymentStrategySpec | nindent 4 }}
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "eosxd-csi.controllerplugin.metaLabels" .  | nindent 8 }}
+        {{- include "eosxd-csi.controllerplugin.labels" .  | nindent 8 }}
     spec:
       serviceAccount: {{ include "eosxd-csi.serviceAccountName.controllerplugin" . }}
       containers:
