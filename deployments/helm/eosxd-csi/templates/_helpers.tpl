@@ -82,7 +82,7 @@ Create the name of the service account to use for the node plugin.
 {{- end -}}
 
 {{/*
-Create unified labels for manila-csi components
+Create unified labels for eosxd-csi components
 */}}
 
 {{- define "eosxd-csi.common.matchLabels" -}}
@@ -99,9 +99,24 @@ app: {{ template "eosxd-csi.name" . }}
 {{- end }}
 {{- end -}}
 
-{{- define "eosxd-csi.common.labels" -}}
+{{- define "eosxd-csi.nodeplugin.metaLabels" -}}
+{{- if .Values.nodeplugin.metaLabelsOverride -}}
+{{ toYaml .Values.nodeplugin.metaLabelsOverride }}
+{{- else -}}
+component: nodeplugin
+release: {{ .Release.Name }}
 {{ include "eosxd-csi.common.metaLabels" . }}
-{{ include "eosxd-csi.common.matchLabels" . }}
+{{- end -}}
+{{- end -}}
+
+{{- define "eosxd-csi.controllerplugin.metaLabels" -}}
+{{- if .Values.controllerplugin.metaLabelsOverride -}}
+{{ toYaml .Values.controllerplugin.metaLabelsOverride }}
+{{- else -}}
+component: controllerplugin
+release: {{ .Release.Name }}
+{{ include "eosxd-csi.common.metaLabels" . }}
+{{- end -}}
 {{- end -}}
 
 {{- define "eosxd-csi.nodeplugin.matchLabels" -}}
@@ -119,23 +134,5 @@ component: nodeplugin
 {{- else -}}
 component: controllerplugin
 {{ include "eosxd-csi.common.matchLabels" . }}
-{{- end -}}
-{{- end -}}
-
-{{- define "eosxd-csi.nodeplugin.labels" -}}
-{{- if .Values.nodeplugin.labelsOverride -}}
-{{ .Values.nodeplugin.labelsOverride }}
-{{- else -}}
-{{ include "eosxd-csi.common.metaLabels" . }}
-{{ include "eosxd-csi.nodeplugin.matchLabels" . }}
-{{- end -}}
-{{- end -}}
-
-{{- define "eosxd-csi.controllerplugin.labels" -}}
-{{- if .Values.controllerplugin.labelsOverride -}}
-{{ .Values.controllerplugin.labelsOverride }}
-{{- else -}}
-{{ include "eosxd-csi.common.metaLabels" . }}
-{{ include "eosxd-csi.controllerplugin.matchLabels" . }}
 {{- end -}}
 {{- end -}}
