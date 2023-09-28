@@ -349,7 +349,7 @@ automountHostPath: /var/eos
 automountDaemonStartupTimeout: 10
 # Number of seconds of idle time after which an autofs-managed eosxd mount will
 # be unmounted. '0' means never unmount, '-1' leaves automount default option.
-automountDaemonUnmountTimeout: 30
+automountDaemonUnmountTimeout: 600
 
 # Reconcile broken /eos/* mounts in specified interval.
 reconcileMountsFrequency: 10s
