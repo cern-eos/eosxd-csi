@@ -23,6 +23,7 @@ import (
 	"os"
 	goexec "os/exec"
 	"os/signal"
+	"sync/atomic"
 	"syscall"
 
 	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/exec"
@@ -91,6 +92,19 @@ func RunBlocking() error {
 
 	if log.LevelEnabled(log.LevelDebug) {
 		args = append(args, "--verbose")
+
+		// Log info about autofs mount in /eos.
+
+		isAutofs, err := IsAutofs("/eos")
+		if err != nil {
+			log.Fatalf("Failed to stat /eos: %v", err)
+		}
+
+		if isAutofs {
+			log.Debugf("autofs already mounted in /eos, automount daemon will reconnect...")
+		} else {
+			log.Debugf("autofs not mounted in /eos, automount daemon will mount it now...")
+		}
 	}
 
 	if log.LevelEnabled(log.LevelTrace) {
@@ -125,13 +139,47 @@ func RunBlocking() error {
 	sigCh := make(chan os.Signal, 2)
 	defer close(sigCh)
 
+	var exitedWithSigTerm atomic.Bool
+
 	go func() {
 		for {
-			if sig, more := <-sigCh; more {
-				cmd.Process.Signal(sig)
-			} else {
+			sig, more := <-sigCh
+			if !more {
 				break
 			}
+
+			if sig == syscall.SIGTERM {
+				// automount daemon unmounts the autofs root in /eos upon
+				// receiving SIGTERM. This makes it impossible to reconnect
+				// the daemon to the mount later, so all consumer Pods will
+				// loose their mounts EOS, without the possibility of restoring
+				// them (unless these Pods are restarted too). The implication
+				// is that the nodeplugin is just being restarted, and will be
+				// needed again.
+				//
+				// SIGKILL is handled differently in automount, as this forces
+				// the daemon to skip the cleanup at exit, leaving the autofs
+				// mount behind and making it possible to reconnect to it later.
+				// We make a use of this, and unless the admin doesn't explicitly
+				// ask for cleanup with AUTOFS_CLEAN_AT_EXIT env var, no cleanup
+				// is done.
+				//
+				// Also, we intentionally don't unmount the existing autofs-managed
+				// mounts inside /eos, so that any existing consumers receive ENOTCONN
+				// (due to broken FUSE mounts), so that accidental `mkdir -p` won't
+				// succeed. They are cleaned by the daemon on startup.
+				//
+				// TODO: remove this once the automount daemon supports skipping
+				//       cleanup (via a command line flag).
+
+				log.Debugf("Sending SIGKILL to automount daemon")
+
+				exitedWithSigTerm.Store(true)
+				cmd.Process.Signal(syscall.SIGKILL)
+				break
+			}
+
+			cmd.Process.Signal(sig)
 		}
 	}()
 
@@ -155,7 +203,7 @@ func RunBlocking() error {
 
 	cmd.Wait()
 
-	if cmd.ProcessState.ExitCode() != 0 {
+	if !exitedWithSigTerm.Load() && cmd.ProcessState.ExitCode() != 0 {
 		log.Fatalf(fmt.Sprintf("automount[%d] has exited unexpectedly: %s", cmd.Process.Pid, cmd.ProcessState))
 	}
 
