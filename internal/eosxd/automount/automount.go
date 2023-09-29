@@ -26,6 +26,7 @@ import (
 	"sync/atomic"
 	"syscall"
 
+	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/env"
 	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/exec"
 	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/log"
 )
@@ -136,6 +137,8 @@ func RunBlocking() error {
 
 	// Catch SIGTERM and SIGKILL and forward it to the automount process.
 
+	autofsTryCleanAtExit := env.GetAutofsTryCleanAtExit()
+
 	sigCh := make(chan os.Signal, 2)
 	defer close(sigCh)
 
@@ -148,7 +151,7 @@ func RunBlocking() error {
 				break
 			}
 
-			if sig == syscall.SIGTERM {
+			if !autofsTryCleanAtExit && sig == syscall.SIGTERM {
 				// automount daemon unmounts the autofs root in /eos upon
 				// receiving SIGTERM. This makes it impossible to reconnect
 				// the daemon to the mount later, so all consumer Pods will
@@ -161,7 +164,7 @@ func RunBlocking() error {
 				// the daemon to skip the cleanup at exit, leaving the autofs
 				// mount behind and making it possible to reconnect to it later.
 				// We make a use of this, and unless the admin doesn't explicitly
-				// ask for cleanup with AUTOFS_CLEAN_AT_EXIT env var, no cleanup
+				// ask for cleanup with AUTOFS_TRY_CLEAN_AT_EXIT env var, no cleanup
 				// is done.
 				//
 				// Also, we intentionally don't unmount the existing autofs-managed
