@@ -23,10 +23,11 @@ import (
 )
 
 const (
-	// Boolean value. By default, automount daemon is sent SIGKILL signal,
-	// which forces it to skip its clean up procedure at exit. This is
-	// needed for the daemon to be able to reconnect to the autofs mount
-	// when the nodeplugin Pod is being restarted.
+	// Boolean value. By default, when exiting, automount daemon is sent
+	// SIGKILL signal forcing it to skip its clean up procedure, leaving
+	// the autofs mount behind. This is needed for the daemon to be able
+	// to reconnect to the autofs mount when the nodeplugin Pod is being
+	// restarted.
 	//
 	// Setting the value of this environment value to TRUE overrides this,
 	// and allows the daemon to do the clean up. This is useful when
