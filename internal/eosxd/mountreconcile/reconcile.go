@@ -37,13 +37,21 @@ type Opts struct {
 func RunBlocking(o *Opts) error {
 	t := time.NewTicker(o.Frequency)
 
+	doReconcile := func() {
+		log.Tracef("Reconciling /cvmfs")
+		if err := reconcile(); err != nil {
+			log.Errorf("Failed to reconcile /cvmfs: %v", err)
+		}
+	}
+
+	// Run at start so that broken mounts after nodeplugin Pod
+	// restart are cleaned up.
+	doReconcile()
+
 	for {
 		select {
 		case <-t.C:
-			log.Tracef("Reconciling /eos")
-			if err := reconcile(); err != nil {
-				log.Errorf("Failed to reconcile /eos: %v", err)
-			}
+			doReconcile()
 		}
 	}
 }
