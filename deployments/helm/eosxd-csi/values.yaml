@@ -12,9 +12,53 @@ extraSecrets:
 # ConfigMap data supports go-template expressions.
 extraConfigMaps:
   eos-csi-dir-etc-auto-master-d:
+    # /etc/auto.master.d/eos.autofs
     eos.autofs: |
-      /eos /etc/auto.eos
-  eos-csi-file-etc-auto-eos:
+      /eos /etc/eos/auto.eos
+
+  eos-csi-dir-etc-eos:
+    fuse.conf: |
+      {"auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.ams.conf: |
+      {"name":"ams","hostport":"eosams.cern.ch","remotemountdir":"/eos/ams/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.atlas.conf: |
+      {"name":"atlas","hostport":"eosatlas.cern.ch","remotemountdir":"/eos/atlas/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.cms.conf: |
+      {"name":"cms","hostport":"eoscms.cern.ch","remotemountdir":"/eos/cms/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.experiment.conf: |
+      {"name":"experiment","hostport":"eospublic.cern.ch","remotemountdir":"/eos/experiment/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.geant4.conf: |
+      {"name":"geant4","hostport":"eospublic.cern.ch","remotemountdir":"/eos/geant4/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.home-i00.conf: |
+      {"name":"home-i00","hostport":"eoshome-i00.cern.ch","remotemountdir":"/eos/user/","bind":"d l n t z","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.home-i01.conf: |
+      {"name":"home-i01","hostport":"eoshome-i01.cern.ch","remotemountdir":"/eos/user/","bind":"a g j k w","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.home-i02.conf: |
+      {"name":"home-i02","hostport":"eoshome-i02.cern.ch","remotemountdir":"/eos/user/","bind":"h o r s y","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.home-i03.conf: |
+      {"name":"home-i03","hostport":"eoshome-i03.cern.ch","remotemountdir":"/eos/user/","bind":"b e m v x","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.home-i04.conf: |
+      {"name":"home-i04","hostport":"eoshome-i04.cern.ch","remotemountdir":"/eos/user/","bind":"c f i p q u","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.lhcb.conf: |
+      {"name":"lhcb","hostport":"eoslhcb.cern.ch","remotemountdir":"/eos/lhcb/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.media.conf: |
+      {"name":"media","hostport":"eosmedia.cern.ch","remotemountdir":"/eos/media/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.project-i00.conf: |
+      {"name":"project-i00","hostport":"eosproject-i00.cern.ch","remotemountdir":"/eos/project/","bind":"a e j g v k q y","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.project-i01.conf: |
+      {"name":"project-i01","hostport":"eosproject-i01.cern.ch","remotemountdir":"/eos/project/","bind":"l h b p s f w n o","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.project-i02.conf: |
+      {"name":"project-i02","hostport":"eosproject-i02.cern.ch","remotemountdir":"/eos/project/","bind":"d c i r m t u x z","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.theory.conf: |
+      {"name":"theory","hostport":"eospublic.cern.ch","remotemountdir":"/eos/theory/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.web.conf: |
+      {"name":"web","hostport":"eosmedia.cern.ch","remotemountdir":"/eos/web/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.workspace.conf: |
+      {"name":"workspace","hostport":"eospublic.cern.ch","remotemountdir":"/eos/workspace/","auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.user.conf: |
+      {"name":"user","hostport":"eosuser-fuse.cern.ch","remotemountdir":"/eos/user/","rm-rf-protect-levels":2,"auth":{"ssskeytab":"/etc/eos.keytab"}}
+    fuse.project.conf: |
+      {"name":"project","hostport":"eosproject-fuse.cern.ch","remotemountdir":"/eos/project/","rm-rf-protect-levels":1,"auth":{"ssskeytab":"/etc/eos.keytab"}}
     auto.eos: |
       ams -fstype=eosx,fsname=ams  :eosxd
       atlas -fstype=eosx,fsname=atlas  :eosxd
@@ -101,50 +145,6 @@ extraConfigMaps:
       project-x -symlink :/eos/project-i02/x
       project-z -symlink :/eos/project-i02/z
 
-  eos-csi-dir-etc-eos:
-    fuse.conf: |
-      {"auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.ams.conf: |
-      {"name":"ams","hostport":"eosams.cern.ch","remotemountdir":"/eos/ams/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.atlas.conf: |
-      {"name":"atlas","hostport":"eosatlas.cern.ch","remotemountdir":"/eos/atlas/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.cms.conf: |
-      {"name":"cms","hostport":"eoscms.cern.ch","remotemountdir":"/eos/cms/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.experiment.conf: |
-      {"name":"experiment","hostport":"eospublic.cern.ch","remotemountdir":"/eos/experiment/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.geant4.conf: |
-      {"name":"geant4","hostport":"eospublic.cern.ch","remotemountdir":"/eos/geant4/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.home-i00.conf: |
-      {"name":"home-i00","hostport":"eoshome-i00.cern.ch","remotemountdir":"/eos/user/","bind":"d l n t z","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.home-i01.conf: |
-      {"name":"home-i01","hostport":"eoshome-i01.cern.ch","remotemountdir":"/eos/user/","bind":"a g j k w","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.home-i02.conf: |
-      {"name":"home-i02","hostport":"eoshome-i02.cern.ch","remotemountdir":"/eos/user/","bind":"h o r s y","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.home-i03.conf: |
-      {"name":"home-i03","hostport":"eoshome-i03.cern.ch","remotemountdir":"/eos/user/","bind":"b e m v x","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.home-i04.conf: |
-      {"name":"home-i04","hostport":"eoshome-i04.cern.ch","remotemountdir":"/eos/user/","bind":"c f i p q u","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.lhcb.conf: |
-      {"name":"lhcb","hostport":"eoslhcb.cern.ch","remotemountdir":"/eos/lhcb/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.media.conf: |
-      {"name":"media","hostport":"eosmedia.cern.ch","remotemountdir":"/eos/media/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.project-i00.conf: |
-      {"name":"project-i00","hostport":"eosproject-i00.cern.ch","remotemountdir":"/eos/project/","bind":"a e j g v k q y","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.project-i01.conf: |
-      {"name":"project-i01","hostport":"eosproject-i01.cern.ch","remotemountdir":"/eos/project/","bind":"l h b p s f w n o","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.project-i02.conf: |
-      {"name":"project-i02","hostport":"eosproject-i02.cern.ch","remotemountdir":"/eos/project/","bind":"d c i r m t u x z","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.theory.conf: |
-      {"name":"theory","hostport":"eospublic.cern.ch","remotemountdir":"/eos/theory/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.web.conf: |
-      {"name":"web","hostport":"eosmedia.cern.ch","remotemountdir":"/eos/web/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.workspace.conf: |
-      {"name":"workspace","hostport":"eospublic.cern.ch","remotemountdir":"/eos/workspace/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.user.conf: |
-      {"name":"user","hostport":"eosuser-fuse.cern.ch","remotemountdir":"/eos/user/","rm-rf-protect-levels":2,"auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.project.conf: |
-      {"name":"project","hostport":"eosproject-fuse.cern.ch","remotemountdir":"/eos/project/","rm-rf-protect-levels":1,"auth":{"ssskeytab":"/etc/eos.keytab"}}
-
 # CSI Node plugin DaemonSet configuration.
 # Node plugin handles node-local operations, e.g. mounting and unmounting
 # eosxd repositories.
@@ -162,9 +162,6 @@ nodeplugin:
   - name: etc-eos
     configMap:
       name: eos-csi-dir-etc-eos
-  - name: etc-auto-eos
-    configMap:
-      name: eos-csi-file-etc-auto-eos
   - name: etc-auto-master-d
     configMap:
       name: eos-csi-dir-etc-auto-master-d
@@ -177,7 +174,7 @@ nodeplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.0.0
+      tag: v1.1.1
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -188,7 +185,7 @@ nodeplugin:
   automount:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.0.0
+      tag: v1.1.1
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -198,9 +195,6 @@ nodeplugin:
       mountPath: /var/cache
     - name: etc-eos
       mountPath: /etc/eos
-    - name: etc-auto-eos
-      mountPath: /etc/auto.eos
-      subPath: auto.eos
     - name: etc-auto-master-d
       mountPath: /etc/auto.master.d
     - name: etc-eos-keytab
@@ -210,7 +204,7 @@ nodeplugin:
   mountreconciler:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.0.0
+      tag: v1.1.1
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -275,7 +269,7 @@ controllerplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.0.0
+      tag: v1.1.1
       pullPolicy: IfNotPresent
     resources: {}
     extraVolumeMounts: []
