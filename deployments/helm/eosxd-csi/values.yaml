@@ -316,6 +316,11 @@ controllerplugin:
     # If not, it is expected they are already present.
     create: true
 
+# Common storage class configuration.
+commonStorageClass:
+  enabled: false
+  className: eos
+
 # Log verbosity level.
 # See https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/logging.md
 # for description of individual verbosity levels.
