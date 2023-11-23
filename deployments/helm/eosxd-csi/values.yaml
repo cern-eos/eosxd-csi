@@ -324,7 +324,7 @@ commonStorageClass:
 # Log verbosity level.
 # See https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/logging.md
 # for description of individual verbosity levels.
-logVerbosityLevel: 5
+logVerbosityLevel: 4
 
 # eosxd CSI driver name used as driver identifier by Kubernetes.
 # Must follow DNS notation format (https://tools.ietf.org/html/rfc1035#section-2.3.1),
