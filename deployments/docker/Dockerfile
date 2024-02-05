@@ -10,6 +10,7 @@ RUN yum install -y --setopt=skip_missing_names_on_install=False \
         eos-fusex-5.1.27                                        \
         autofs                                                  \
         cern-eos-autofs                                         \
+        cern-eos-autofs-squashfs                                \
 	&& yum clean all
 
 # eosxd-csi deployment with Helm should provide
