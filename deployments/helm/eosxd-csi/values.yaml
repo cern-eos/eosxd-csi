@@ -15,6 +15,9 @@ extraConfigMaps:
     # /etc/auto.master.d/eos.autofs
     eos.autofs: |
       /eos /etc/eos/auto.eos
+    # /etc/auto.master.d/eos.squashfs.autofs
+    eos.squashfs.autofs: |
+      /eos/squashfs program:/sbin/auto.eos.squashfs
 
   eos-csi-dir-etc-eos:
     fuse.conf: |
