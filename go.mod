@@ -1,25 +1,26 @@
 module github.com/cern-eos/eosxd-csi
 
-go 1.20
+go 1.21
+
+toolchain go1.21.5
 
 require (
-	github.com/container-storage-interface/spec v1.6.0
-	github.com/davecgh/go-spew v1.1.1
-	github.com/kubernetes-csi/csi-lib-utils v0.11.0
-	github.com/moby/sys/mountinfo v0.6.2
-	google.golang.org/grpc v1.47.0
-	k8s.io/apimachinery v0.24.2
-	k8s.io/klog/v2 v2.60.1
-	k8s.io/mount-utils v0.24.2
+	github.com/container-storage-interface/spec v1.9.0
+	github.com/kubernetes-csi/csi-lib-utils v0.17.0
+	github.com/moby/sys/mountinfo v0.7.1
+	google.golang.org/grpc v1.62.0
+	k8s.io/apimachinery v0.29.1
+	k8s.io/klog/v2 v2.120.1
+	k8s.io/mount-utils v0.29.1
 )
 
 require (
-	github.com/go-logr/logr v1.2.0 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
-	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
-	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
-	google.golang.org/protobuf v1.27.1 // indirect
-	k8s.io/utils v0.0.0-20220210201930-3a6ce19ff2f9 // indirect
+	github.com/go-logr/logr v1.4.1 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
+	golang.org/x/net v0.20.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240123012728-ef4313101c80 // indirect
+	google.golang.org/protobuf v1.32.0 // indirect
+	k8s.io/utils v0.0.0-20230726121419-3b25d923346b // indirect
 )
