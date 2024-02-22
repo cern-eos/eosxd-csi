@@ -1,4 +1,4 @@
-FROM gitlab-registry.cern.ch/linuxsupport/alma9-base:20230701-1
+FROM gitlab-registry.cern.ch/linuxsupport/alma9-base:20240201-2
 
 # Setup EOS repository.
 ADD deployments/docker/eos9-stable.repo /etc/yum.repos.d/eos9-stable.repo
