@@ -19,7 +19,7 @@ package identity
 import (
 	"context"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/version"
+	"github.com/cern-eos/eosxd-csi/internal/version"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
 )

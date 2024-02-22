@@ -19,8 +19,8 @@ package node
 import (
 	goexec "os/exec"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/exec"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/mountutils"
+	"github.com/cern-eos/eosxd-csi/internal/exec"
+	"github.com/cern-eos/eosxd-csi/internal/mountutils"
 )
 
 func bindMount(from, to string) error {

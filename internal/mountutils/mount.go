@@ -20,7 +20,7 @@ import (
 	"bytes"
 	goexec "os/exec"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/exec"
+	"github.com/cern-eos/eosxd-csi/internal/exec"
 )
 
 func Unmount(mountpoint string, extraArgs ...string) error {

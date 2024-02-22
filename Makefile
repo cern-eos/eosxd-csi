@@ -49,7 +49,7 @@ ifdef VERSION
 endif
 BINARY_VERSION ?= ${GIT_TAG}
 
-BASE_PKG = gitlab.cern.ch/kubernetes/storage/eosxd-csi
+BASE_PKG = github.com/cern-eos/eosxd-csi
 # Only set Version if building a tag or VERSION is set
 ifneq ($(BINARY_VERSION),)
 	LDFLAGS += -X ${BASE_PKG}/internal/version.version=${BINARY_VERSION}

@@ -22,9 +22,9 @@ import (
 	"os"
 	"time"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/mountreconcile"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/log"
-	V "gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/version"
+	"github.com/cern-eos/eosxd-csi/internal/eosxd/mountreconcile"
+	"github.com/cern-eos/eosxd-csi/internal/log"
+	V "github.com/cern-eos/eosxd-csi/internal/version"
 
 	"k8s.io/klog/v2"
 )

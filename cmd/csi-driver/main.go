@@ -22,9 +22,9 @@ import (
 	"os"
 	"strings"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/driver"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/log"
-	V "gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/version"
+	"github.com/cern-eos/eosxd-csi/internal/eosxd/driver"
+	"github.com/cern-eos/eosxd-csi/internal/log"
+	V "github.com/cern-eos/eosxd-csi/internal/version"
 
 	"k8s.io/klog/v2"
 )

@@ -1,4 +1,4 @@
-module gitlab.cern.ch/kubernetes/storage/eosxd-csi
+module github.com/cern-eos/eosxd-csi
 
 go 1.20
 
