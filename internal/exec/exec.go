@@ -21,7 +21,7 @@ import (
 	"os/exec"
 	"sync/atomic"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/log"
+	"github.com/cern-eos/eosxd-csi/internal/log"
 )
 
 // This file only provides wrappers around "os/exec" and logs the executed commands.

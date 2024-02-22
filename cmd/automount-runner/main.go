@@ -21,10 +21,10 @@ import (
 	"fmt"
 	"os"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/automount"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/env"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/log"
-	V "gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/version"
+	"github.com/cern-eos/eosxd-csi/internal/eosxd/automount"
+	"github.com/cern-eos/eosxd-csi/internal/eosxd/env"
+	"github.com/cern-eos/eosxd-csi/internal/log"
+	V "github.com/cern-eos/eosxd-csi/internal/version"
 
 	"k8s.io/klog/v2"
 )

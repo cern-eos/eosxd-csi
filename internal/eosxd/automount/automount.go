@@ -26,9 +26,9 @@ import (
 	"sync/atomic"
 	"syscall"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/env"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/exec"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/log"
+	"github.com/cern-eos/eosxd-csi/internal/eosxd/env"
+	"github.com/cern-eos/eosxd-csi/internal/exec"
+	"github.com/cern-eos/eosxd-csi/internal/log"
 )
 
 type Opts struct {

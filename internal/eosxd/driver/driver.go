@@ -23,11 +23,11 @@ import (
 	"strings"
 	"time"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/automount"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/controller"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/identity"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/eosxd/node"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/log"
+	"github.com/cern-eos/eosxd-csi/internal/eosxd/automount"
+	"github.com/cern-eos/eosxd-csi/internal/eosxd/controller"
+	"github.com/cern-eos/eosxd-csi/internal/eosxd/identity"
+	"github.com/cern-eos/eosxd-csi/internal/eosxd/node"
+	"github.com/cern-eos/eosxd-csi/internal/log"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"k8s.io/apimachinery/pkg/util/validation"

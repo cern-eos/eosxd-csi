@@ -24,8 +24,8 @@ import (
 	"strings"
 	"time"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/log"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/mountutils"
+	"github.com/cern-eos/eosxd-csi/internal/log"
+	"github.com/cern-eos/eosxd-csi/internal/mountutils"
 
 	"github.com/moby/sys/mountinfo"
 )

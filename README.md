@@ -6,8 +6,8 @@ See project documentation at [docs/](./docs).
 
 ## Reporting bugs
 
-Please report issues at <https://gitlab.cern.ch/kubernetes/storage/eosxd-csi/-/issues>.
+Please report issues at <https://github.com/cern-eos/eosxd-csi/issues>.
 
 ## Contributing
 
-You can submit patches using GitHub pull requests at <https://gitlab.cern.ch/kubernetes/storage/eosxd-csi/-/merge_requests>. For larger changes please open an Issue to discuss them first before submitting patches.
+You can submit patches using GitHub pull requests at <https://github.com/cern-eos/eosxd-csi/pulls>. For larger changes please open an Issue to discuss them first before submitting patches.

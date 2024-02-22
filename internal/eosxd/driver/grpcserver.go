@@ -26,7 +26,7 @@ import (
 	"strings"
 	"sync/atomic"
 
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/log"
+	"github.com/cern-eos/eosxd-csi/internal/log"
 
 	"github.com/kubernetes-csi/csi-lib-utils/protosanitizer"
 	"google.golang.org/grpc"

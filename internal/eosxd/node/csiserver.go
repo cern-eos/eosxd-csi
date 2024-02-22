@@ -24,7 +24,7 @@ import (
 	"path"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
-	"gitlab.cern.ch/kubernetes/storage/eosxd-csi/internal/mountutils"
+	"github.com/cern-eos/eosxd-csi/internal/mountutils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
