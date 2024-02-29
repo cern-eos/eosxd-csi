@@ -20,6 +20,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -169,16 +170,32 @@ func tryWithTimeout(description string, timeoutSecs int, f func() (bool, error))
 	return nil
 }
 
+func waitForAutofs(mountpoint string, timeoutSeconds int) error {
+	err := tryWithTimeout(
+		fmt.Sprintf("autofs in %s", mountpoint),
+		timeoutSeconds,
+		func() (bool, error) { return automount.IsAutofs("/eos") },
+	)
+
+	if err != nil {
+		return fmt.Errorf("failed to check for autofs in %s: %v", mountpoint, err)
+	}
+
+	return nil
+}
+
 func setupNodeServiceRole(s *grpcServer, d *Driver) error {
 	// First wait until autofs in /eos is ready.
 
-	err := tryWithTimeout(
-		"autofs in /eos",
-		d.Opts.AutomountDaemonStartupTimeoutSeconds,
-		func() (bool, error) { return automount.IsAutofs("/eos") },
-	)
-	if err != nil {
-		return fmt.Errorf("failed to check for autofs in /eos: %v", err)
+	if err := waitForAutofs("/eos", d.AutomountDaemonStartupTimeoutSeconds); err != nil {
+		return err
+	}
+
+	if _, err := os.Stat("/eos/squashfs"); err == nil {
+		// Wait for /eos/squashfs too since it is configured in the maps.
+		if err := waitForAutofs("/eos/squashfs", d.AutomountDaemonStartupTimeoutSeconds); err != nil {
+			return err
+		}
 	}
 
 	// We can register node server now.
