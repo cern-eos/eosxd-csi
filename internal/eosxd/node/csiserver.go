@@ -21,10 +21,10 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path"
 
-	"github.com/container-storage-interface/spec/lib/go/csi"
+	"github.com/cern-eos/eosxd-csi/internal/log"
 	"github.com/cern-eos/eosxd-csi/internal/mountutils"
+	"github.com/container-storage-interface/spec/lib/go/csi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -106,7 +106,7 @@ func (srv *Server) NodePublishVolume(
 
 	switch mntState {
 	case mountutils.StNotMounted:
-		if err := doMount(req); err != nil {
+		if err := slaveRecursiveBind(eosRoot, targetPath); err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to bind mount: %v", err)
 		}
 		fallthrough
@@ -117,18 +117,6 @@ func (srv *Server) NodePublishVolume(
 			"unexpected mountpoint state in %s: expected %s or %s, got %s",
 			targetPath, mountutils.StNotMounted, mountutils.StMounted, mntState)
 	}
-}
-
-func doMount(req *csi.NodePublishVolumeRequest) error {
-	targetPath := req.GetTargetPath()
-
-	if repository := req.GetVolumeContext()["repository"]; repository != "" {
-		// Mount a single repository.
-		return bindMount(path.Join(eosRoot, repository), targetPath)
-	}
-
-	// Mount the whole autofs-EOS root.
-	return slaveRecursiveBind(eosRoot, targetPath)
 }
 
 func (srv *Server) NodeUnpublishVolume(
@@ -152,6 +140,10 @@ func (srv *Server) NodeUnpublishVolume(
 	}
 
 	if mntState != mountutils.StNotMounted {
+		if err := makeRecursivePrivateMount(targetPath); err != nil {
+			log.Errorf("failed to make %s private mount: %v", targetPath, err)
+		}
+
 		if err := recursiveUnmount(targetPath); err != nil {
 			return nil, status.Errorf(codes.Internal,
 				"failed to unmount %s: %v", targetPath, err)
