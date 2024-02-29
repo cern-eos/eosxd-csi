@@ -177,7 +177,7 @@ nodeplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.3.0
+      tag: v1.3.1-rc.0
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -188,7 +188,7 @@ nodeplugin:
   automount:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.3.0
+      tag: v1.3.1-rc.0
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -207,7 +207,7 @@ nodeplugin:
   mountreconciler:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.3.0
+      tag: v1.3.1-rc.0
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -272,7 +272,7 @@ controllerplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.3.0
+      tag: v1.3.1-rc.0
       pullPolicy: IfNotPresent
     resources: {}
     extraVolumeMounts: []
