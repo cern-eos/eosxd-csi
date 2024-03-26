@@ -7,7 +7,7 @@ RUN yum install -y dnf-plugins-core epel-release \
 
 # Install the EOS client and autofs-related packages.
 RUN yum install -y --setopt=skip_missing_names_on_install=False \
-        eos-fusex-5.1.27                                        \
+        eos-fusex-5.2.21                                        \
         autofs                                                  \
         cern-eos-autofs                                         \
         cern-eos-autofs-squashfs                                \
