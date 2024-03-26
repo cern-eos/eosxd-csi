@@ -1,9 +1,9 @@
 # Added by EOSxd CSI driver.
 # Koji repository with EOS packages.
 
-[eos9-stable]
+[eos9al-stable]
 name=EOS binaries from CERN Koji [stable]
-baseurl=http://linuxsoft.cern.ch/internal/repos/eos9-stable/$basearch/os
+baseurl=http://linuxsoft.cern.ch/internal/repos/eos9al-stable/$basearch/os
 enabled=1
 gpgcheck=False
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-koji file:///etc/pki/rpm-gpg/RPM-GPG-KEY-kojiv2
