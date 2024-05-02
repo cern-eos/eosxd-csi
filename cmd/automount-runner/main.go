@@ -57,7 +57,6 @@ func main() {
 	err := automount.Init(&automount.Opts{
 		UnmountTimeoutSeconds: *unmountTimeoutSeconds,
 	})
-
 	if err != nil {
 		log.Fatalf("Failed to initialize automount-runner: %v", err)
 	}

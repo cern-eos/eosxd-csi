@@ -80,9 +80,7 @@ const (
 	maxDriverNameLength = 63
 )
 
-var (
-	errTimeout = errors.New("timed out waiting for condition")
-)
+var errTimeout = errors.New("timed out waiting for condition")
 
 func (o *Opts) validate() error {
 	required := func(name, value string) error {
@@ -176,7 +174,6 @@ func waitForAutofs(mountpoint string, timeoutSeconds int) error {
 		timeoutSeconds,
 		func() (bool, error) { return automount.IsAutofs("/eos") },
 	)
-
 	if err != nil {
 		return fmt.Errorf("failed to check for autofs in %s: %v", mountpoint, err)
 	}
