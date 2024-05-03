@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  # PV name contains namespace name of its target PVC so that we can distiguish it easier.
+  # PV name contains namespace name of its target PVC so that we can distinguish it easier.
   name: eos-default
 spec:
   csi:
