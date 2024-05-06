@@ -1,13 +1,13 @@
 name: ci-test-golang
-on: ["push"]
-  # push:
-  #   branches:
-  #     - '*'
-  #     - '!master'
-  # pull_request:
-  #   branches:
-  #     - 'master'
-  # workflow_dispatch:
+on:
+  push:
+    branches:
+      - '*'
+      - '!master'
+  pull_request:
+    branches:
+      - 'master'
+  workflow_dispatch:
 env:
   GO_VERSION: '1.22'
 
