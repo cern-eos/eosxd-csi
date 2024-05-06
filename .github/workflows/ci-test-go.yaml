@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - 'master'
-  workflow_dispatch:
+  workflow_dispatch: # Allows for manual triggers using the `gh` CLI.
 env:
   GO_VERSION: '1.22'
 
