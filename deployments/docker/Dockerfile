@@ -7,19 +7,23 @@ COPY deployments/docker/eos9al-stable.repo /etc/yum.repos.d/eos9al-stable.repo
 # configuration files, as they break certain mounts.
 #
 # eosxd-csi helm deployment comes packaged with it's own autofs configuration.
-RUN yum install -y \
+RUN dnf install -y \
         dnf-plugins-core \
         epel-release && \
     dnf config-manager --set-enabled crb && \
-    yum install -y --setopt=skip_missing_names_on_install=False \
+    dnf install -y --setopt=skip_missing_names_on_install=False \
         autofs \
         cern-eos-autofs \
         cern-eos-autofs-squashfs \
         eos-fusex-5.2.22 && \
-	yum clean all && \
-    rm /etc/auto.eos.main.misc    \
-       /etc/auto.eos.main.project \
-       /etc/auto.eos.main.user
+	dnf clean all && \
+    rm -rf \
+        /etc/auto.eos.main.misc    \
+        /etc/auto.eos.main.project \
+        /etc/auto.eos.main.user \
+        /usr/local/share/man \
+        /usr/share/man \
+        /var/cache/dnf
 
 ARG TARGETARCH
 ARG RELEASE
