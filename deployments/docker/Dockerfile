@@ -1,24 +1,29 @@
-FROM gitlab-registry.cern.ch/linuxsupport/alma9-base:20240201-2
+FROM gitlab-registry.cern.ch/linuxsupport/alma9-base:20240501-1
 
 # Setup EOS repository.
-ADD deployments/docker/eos9al-stable.repo /etc/yum.repos.d/eos9al-stable.repo
-RUN yum install -y dnf-plugins-core epel-release \
-    && dnf config-manager --set-enabled crb
+COPY deployments/docker/eos9al-stable.repo /etc/yum.repos.d/eos9al-stable.repo
 
-# Install the EOS client and autofs-related packages.
-RUN yum install -y --setopt=skip_missing_names_on_install=False \
-        eos-fusex-5.2.22                                        \
-        autofs                                                  \
-        cern-eos-autofs                                         \
-        cern-eos-autofs-squashfs                                \
-	&& yum clean all
-
-# eosxd-csi deployment with Helm should provide
-# its own autofs configuration. The files listed below
-# break certain mounts, and so need to be removed.
-RUN rm /etc/auto.eos.main.misc    \
-       /etc/auto.eos.main.project \
-       /etc/auto.eos.main.user
+# Install the EOS client, autofs-related packages and remove autofs
+# configuration files, as they break certain mounts.
+#
+# eosxd-csi helm deployment comes packaged with it's own autofs configuration.
+RUN dnf install -y \
+        dnf-plugins-core \
+        epel-release && \
+    dnf config-manager --set-enabled crb && \
+    dnf install -y --setopt=skip_missing_names_on_install=False \
+        autofs \
+        cern-eos-autofs \
+        cern-eos-autofs-squashfs \
+        eos-fusex-5.2.22 && \
+	dnf clean all && \
+    rm -rf \
+        /etc/auto.eos.main.misc    \
+        /etc/auto.eos.main.project \
+        /etc/auto.eos.main.user \
+        /usr/local/share/man \
+        /usr/share/man \
+        /var/cache/dnf
 
 ARG TARGETARCH
 ARG RELEASE
@@ -43,8 +48,8 @@ LABEL description="EOSxd CSI Plugin" \
 
 # Override the default list of accepted KRB ciphers by adding "arcfour-hmac-md5"
 # to retain support for tickets created by cc7 clients.
-ADD deployments/docker/crypto-policies /etc/krb5.conf.d/crypto-policies
+COPY deployments/docker/crypto-policies /etc/krb5.conf.d/crypto-policies
 
-ADD bin/linux-${TARGETARCH}/csi-driver /csi-driver
-ADD bin/linux-${TARGETARCH}/automount-runner /automount-runner
-ADD bin/linux-${TARGETARCH}/mount-reconciler /mount-reconciler
+COPY bin/linux-${TARGETARCH}/csi-driver /csi-driver
+COPY bin/linux-${TARGETARCH}/automount-runner /automount-runner
+COPY bin/linux-${TARGETARCH}/mount-reconciler /mount-reconciler
