@@ -69,8 +69,7 @@ func getKnownEosMountsGroupedByInstance() (map[string][]string, error) {
 
 	eosMountsByInstances := make(map[string][]string)
 	for _, info := range eosMountInfos {
-		eosMountsByInstances[info.Source] =
-			append(eosMountsByInstances[info.Source], info.Mountpoint)
+		eosMountsByInstances[info.Source] = append(eosMountsByInstances[info.Source], info.Mountpoint)
 	}
 
 	return eosMountsByInstances, nil

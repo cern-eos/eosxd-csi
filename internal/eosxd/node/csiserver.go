@@ -39,9 +39,7 @@ const (
 	eosRoot = "/eos"
 )
 
-var (
-	_ csi.NodeServer = (*Server)(nil)
-)
+var _ csi.NodeServer = (*Server)(nil)
 
 func New(nodeID string) *Server {
 	enabledCaps := []csi.NodeServiceCapability_RPC_Type{
@@ -93,7 +91,7 @@ func (srv *Server) NodePublishVolume(
 
 	targetPath := req.GetTargetPath()
 
-	if err := os.MkdirAll(targetPath, 0700); err != nil {
+	if err := os.MkdirAll(targetPath, 0o700); err != nil {
 		return nil, status.Errorf(codes.Internal,
 			"failed to create mountpoint directory at %s: %v", targetPath, err)
 	}

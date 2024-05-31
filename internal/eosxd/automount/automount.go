@@ -46,7 +46,7 @@ func eosVersion() string {
 
 func setupAutofs(o *Opts) error {
 	writeFmtFile := func(filepath, format string, fmtValues ...any) error {
-		if err := os.WriteFile(filepath, []byte(fmt.Sprintf(format, fmtValues...)), 0644); err != nil {
+		if err := os.WriteFile(filepath, []byte(fmt.Sprintf(format, fmtValues...)), 0o644); err != nil {
 			return fmt.Errorf("failed to write autofs configuration to %s: %v", filepath, err)
 		}
 		return nil
