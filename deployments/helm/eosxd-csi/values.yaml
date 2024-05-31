@@ -159,19 +159,19 @@ nodeplugin:
 
   # Extra volumes to be appended to nodeplugin's Pod.spec.volumes.
   extraVolumes:
-  - name: host-var-cache
-    hostPath:
-      path: /var/cache
-  - name: etc-eos
-    configMap:
-      name: eos-csi-dir-etc-eos
-  - name: etc-auto-master-d
-    configMap:
-      name: eos-csi-dir-etc-auto-master-d
-  - name: etc-eos-keytab
-    secret:
-      secretName: eos-csi-file-etc-eos-keytab
-      defaultMode: 0400
+    - name: host-var-cache
+      hostPath:
+        path: /var/cache
+    - name: etc-eos
+      configMap:
+        name: eos-csi-dir-etc-eos
+    - name: etc-auto-master-d
+      configMap:
+        name: eos-csi-dir-etc-auto-master-d
+    - name: etc-eos-keytab
+      secret:
+        secretName: eos-csi-file-etc-eos-keytab
+        defaultMode: 0400
 
   # eosxd CSI image and container resources specs.
   plugin:
@@ -194,15 +194,15 @@ nodeplugin:
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="automount"].volumeMounts.
     extraVolumeMounts:
-    - name: host-var-cache
-      mountPath: /var/cache
-    - name: etc-eos
-      mountPath: /etc/eos
-    - name: etc-auto-master-d
-      mountPath: /etc/auto.master.d
-    - name: etc-eos-keytab
-      mountPath: /etc/eos.keytab
-      subPath: eos.keytab
+      - name: host-var-cache
+        mountPath: /var/cache
+      - name: etc-eos
+        mountPath: /etc/eos
+      - name: etc-auto-master-d
+        mountPath: /etc/auto.master.d
+      - name: etc-eos-keytab
+        mountPath: /etc/eos.keytab
+        subPath: eos.keytab
 
   mountreconciler:
     image:
@@ -229,6 +229,11 @@ nodeplugin:
     # all Pods that mount eosxd volumes on that node must be restarted (deleted)
     # too in order to refresh the mounts.
     type: OnDelete
+
+  # Pod-level security context for nodeplugin daemonset.
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
 
   # Pod priority class name.
   priorityClassName: system-node-critical
@@ -288,6 +293,11 @@ controllerplugin:
   # Deployment update strategy.
   deploymentStrategySpec:
     type: RollingUpdate
+
+  # Pod-level security context for controllerplugin deployment.
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
 
   # Pod priority class name.
   priorityClassName: ""
