@@ -152,7 +152,6 @@ extraConfigMaps:
 # Node plugin handles node-local operations, e.g. mounting and unmounting
 # eosxd repositories.
 nodeplugin:
-
   # Component name. Used as `component` label value
   # and to generate DaemonSet name.
   name: nodeplugin
@@ -177,7 +176,7 @@ nodeplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.1.1
+      tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -188,7 +187,7 @@ nodeplugin:
   automount:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.1.1
+      tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -207,7 +206,7 @@ nodeplugin:
   mountreconciler:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.1.1
+      tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -218,7 +217,7 @@ nodeplugin:
   registrar:
     image:
       repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
-      tag: v2.5.1
+      tag: v2.11.0
       pullPolicy: IfNotPresent
     resources: {}
 
@@ -263,7 +262,6 @@ nodeplugin:
 # of a reference to eosxd repositories used inside the CO (e.g. Kubernetes), and are not modifying
 # the eosxd store in any way.
 controllerplugin:
-
   # Component name. Used as `component` label value
   # and to generate DaemonSet name.
   name: controllerplugin
@@ -277,7 +275,7 @@ controllerplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.1.1
+      tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
     resources: {}
     extraVolumeMounts: []
@@ -286,7 +284,7 @@ controllerplugin:
   provisioner:
     image:
       repository: k8s.gcr.io/sig-storage/csi-provisioner
-      tag: v3.2.1
+      tag: v5.0.1
       pullPolicy: IfNotPresent
     resources: {}
 
@@ -313,7 +311,6 @@ controllerplugin:
 
   # ServiceAccount to use with Controller plugin Deployment.
   serviceAccount:
-
     # Name of the ServiceAccount (to use and/or create).
     # If no name is provided, Helm chart will generate one.
     serviceAccountName: ""
@@ -324,7 +321,6 @@ controllerplugin:
 
   # RBAC rules assigned to the ServiceAccount defined above.
   rbac:
-
     # Whether to create RBACs in the eosxd CSI namespace.
     # If not, it is expected they are already present.
     create: true
