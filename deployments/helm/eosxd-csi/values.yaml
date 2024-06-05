@@ -217,7 +217,7 @@ nodeplugin:
   registrar:
     image:
       repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
-      tag: v2.11.0
+      tag: v2.10.1
       pullPolicy: IfNotPresent
     resources: {}
 
@@ -284,7 +284,7 @@ controllerplugin:
   provisioner:
     image:
       repository: k8s.gcr.io/sig-storage/csi-provisioner
-      tag: v5.0.1
+      tag: v4.0.1
       pullPolicy: IfNotPresent
     resources: {}
 
