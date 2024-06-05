@@ -195,8 +195,8 @@ nodeplugin:
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="nodeplugin"].volumeMounts.
     extraVolumeMounts:
-      - name: etc-eos-crypto-policies
-        mountPath: /etc/krb5.conf.d/crypto-policies
+      - name: eos-csi-dir-etc-krb5-conf
+        mountPath: /etc/krb5.conf.d
 
   # eosxd CSI image and container resources specs.
   automount:
