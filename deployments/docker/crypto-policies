@@ -1,6 +1,0 @@
-# Added by EOSxd CSI driver.
-# Overrides the default list of accepted KRB ciphers by adding "arcfour-hmac-md5"
-# to retain support for tickets created by cc7 clients.
-
-[libdefaults]
-permitted_enctypes = arcfour-hmac-md5 aes256-cts-hmac-sha1-96 aes256-cts-hmac-sha384-192 aes128-cts-hmac-sha256-128 aes128-cts-hmac-sha1-96
