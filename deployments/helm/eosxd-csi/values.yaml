@@ -12,6 +12,9 @@ extraSecrets:
 # ConfigMap data supports go-template expressions.
 extraConfigMaps:
   # /etc/krb5.conf.d/crypto-policies
+  #
+  # Required to override the default list of accepted KRB ciphers by adding
+  # "arcfour-hmac-md5" to retain support for tickets created by cc7 clients.
   eos-csi-dir-etc-krb5-conf:
     crypto-policies: |
       # Added by EOSxd CSI driver.
