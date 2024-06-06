@@ -11,6 +11,19 @@ extraSecrets:
 # These can be used e.g. when defining eosxd client configuration.
 # ConfigMap data supports go-template expressions.
 extraConfigMaps:
+  # /etc/krb5.conf.d/crypto-policies
+  #
+  # Required to override the default list of accepted KRB ciphers by adding
+  # "arcfour-hmac-md5" to retain support for tickets created by cc7 clients.
+  eos-csi-dir-etc-krb5-conf:
+    crypto-policies: |
+      # Added by EOSxd CSI driver.
+      # Overrides the default list of accepted KRB ciphers by adding "arcfour-hmac-md5"
+      # to retain support for tickets created by cc7 clients.
+
+      [libdefaults]
+      permitted_enctypes = arcfour-hmac-md5 aes256-cts-hmac-sha1-96 aes256-cts-hmac-sha384-192 aes128-cts-hmac-sha256-128 aes128-cts-hmac-sha1-96
+
   eos-csi-dir-etc-auto-master-d:
     # /etc/auto.master.d/eos.autofs
     eos.autofs: |
@@ -152,7 +165,6 @@ extraConfigMaps:
 # Node plugin handles node-local operations, e.g. mounting and unmounting
 # eosxd repositories.
 nodeplugin:
-
   # Component name. Used as `component` label value
   # and to generate DaemonSet name.
   name: nodeplugin
@@ -172,6 +184,9 @@ nodeplugin:
       secret:
         secretName: eos-csi-file-etc-eos-keytab
         defaultMode: 0400
+    - name: eos-csi-dir-etc-krb5-conf
+      configMap:
+        name: eos-csi-dir-etc-krb5-conf
 
   # eosxd CSI image and container resources specs.
   plugin:
@@ -182,7 +197,9 @@ nodeplugin:
     resources: {}
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="nodeplugin"].volumeMounts.
-    extraVolumeMounts: []
+    extraVolumeMounts:
+      - name: eos-csi-dir-etc-krb5-conf
+        mountPath: /etc/krb5.conf.d
 
   # eosxd CSI image and container resources specs.
   automount:
@@ -203,6 +220,8 @@ nodeplugin:
       - name: etc-eos-keytab
         mountPath: /etc/eos.keytab
         subPath: eos.keytab
+      - name: eos-csi-dir-etc-krb5-conf
+        mountPath: /etc/krb5.conf.d
 
   mountreconciler:
     image:
@@ -212,7 +231,9 @@ nodeplugin:
     resources: {}
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="mountreconciler"].volumeMounts.
-    extraVolumeMounts: []
+    extraVolumeMounts:
+      - name: eos-csi-dir-etc-krb5-conf
+        mountPath: /etc/krb5.conf.d
 
   # csi-node-driver-registrar image and container resources specs.
   registrar:
@@ -259,11 +280,10 @@ nodeplugin:
   dnsPolicy: ClusterFirstWithHostNet
 
 # CSI Controller plugin Deployment configuration.
-# eosxd CSI supports volume provisioning, however the provisioned volumes only fulfill the role
+# eosxd CSI supports volume provisioning, however the provisioned volumes only fulfil the role
 # of a reference to eosxd repositories used inside the CO (e.g. Kubernetes), and are not modifying
 # the eosxd store in any way.
 controllerplugin:
-
   # Component name. Used as `component` label value
   # and to generate DaemonSet name.
   name: controllerplugin
@@ -271,7 +291,10 @@ controllerplugin:
   # Number of Deployment replicas. In general, one is sufficient.
   replicas: 1
 
-  extraVolumes: []
+  extraVolumes:
+    - name: eos-csi-dir-etc-krb5-conf
+      configMap:
+        name: eos-csi-dir-etc-krb5-conf
 
   # eosxd CSI image and container resources specs.
   plugin:
@@ -280,7 +303,9 @@ controllerplugin:
       tag: v1.1.1
       pullPolicy: IfNotPresent
     resources: {}
-    extraVolumeMounts: []
+    extraVolumeMounts:
+      - name: eos-csi-dir-etc-krb5-conf
+        mountPath: /etc/krb5.conf.d
 
   # CSI external-provisioner image and container resources specs.
   provisioner:
@@ -313,7 +338,6 @@ controllerplugin:
 
   # ServiceAccount to use with Controller plugin Deployment.
   serviceAccount:
-
     # Name of the ServiceAccount (to use and/or create).
     # If no name is provided, Helm chart will generate one.
     serviceAccountName: ""
@@ -324,7 +348,6 @@ controllerplugin:
 
   # RBAC rules assigned to the ServiceAccount defined above.
   rbac:
-
     # Whether to create RBACs in the eosxd CSI namespace.
     # If not, it is expected they are already present.
     create: true
