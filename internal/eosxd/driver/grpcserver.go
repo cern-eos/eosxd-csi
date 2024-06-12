@@ -49,10 +49,8 @@ const (
 	unixDomainSocketProto  = "unix"
 )
 
-var (
-	// Counter value used for pairing up GRPC call and response log messages.
-	grpcCallCounter uint64
-)
+// Counter value used for pairing up GRPC call and response log messages.
+var grpcCallCounter uint64
 
 func fmtGRPCLogMsg(grpcCallID uint64, msg string) string {
 	return fmt.Sprintf("Call-ID %d: %s", grpcCallID, msg)

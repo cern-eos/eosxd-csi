@@ -17,6 +17,9 @@ spec:
       hostPID: true
       hostNetwork: {{ .Values.nodeplugin.hostNetwork }}
       dnsPolicy: {{ .Values.nodeplugin.dnsPolicy }}
+      {{- with .Values.controllerplugin.podSecurityContext }}
+      securityContext: {{ toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: registrar
           image: {{ .Values.nodeplugin.registrar.image.repository }}:{{ .Values.nodeplugin.registrar.image.tag }}

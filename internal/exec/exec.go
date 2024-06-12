@@ -26,10 +26,8 @@ import (
 
 // This file only provides wrappers around "os/exec" and logs the executed commands.
 
-var (
-	// Counter value used for pairing pre- and post-exec log messages.
-	execCounter uint64
-)
+// Counter value used for pairing pre- and post-exec log messages.
+var execCounter uint64
 
 func fmtLogMsg(execID uint64, msg string) string {
 	return fmt.Sprintf("Exec-ID %d: %s", execID, msg)
