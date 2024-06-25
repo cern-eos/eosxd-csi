@@ -21,7 +21,7 @@ spec:
       serviceAccount: {{ include "eosxd-csi.serviceAccountName.controllerplugin" . }}
       containers:
         - name: provisioner
-          image: {{ .Values.controllerplugin.provisioner.image.repository }}:{{ .Values.controllerplugin.provisioner.image.tag }}
+          image: {{ .Values.controllerplugin.provisioner.image.repository }}:{{ .Values.controllerplugin.provisioner.image.tag | default .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.controllerplugin.provisioner.image.pullPolicy }}
           args:
             - -v={{ .Values.logVerbosityLevel }}
@@ -37,7 +37,7 @@ spec:
           resources: {{ toYaml . | nindent 12 }}
           {{- end }}
         - name: controllerplugin
-          image: {{ .Values.controllerplugin.plugin.image.repository }}:{{ .Values.controllerplugin.plugin.image.tag }}
+          image: {{ .Values.controllerplugin.plugin.image.repository }}:{{ .Values.controllerplugin.plugin.image.tag | default .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.controllerplugin.plugin.image.pullPolicy }}
           command: [/csi-driver]
           args:
