@@ -45,7 +45,7 @@ spec:
           resources: {{ toYaml . | nindent 12 }}
           {{- end }}
         - name: nodeplugin
-          image: {{ .Values.nodeplugin.plugin.image.repository }}:{{ .Values.nodeplugin.plugin.image.tag }}
+          image: {{ .Values.nodeplugin.plugin.image.repository }}:{{ .Values.nodeplugin.plugin.image.tag | default .Chart.AppVersion }}
           command: [/csi-driver]
           args:
             - -v={{ .Values.logVerbosityLevel }}
@@ -92,7 +92,7 @@ spec:
           resources: {{ toYaml . | nindent 12 }}
           {{- end }}
         - name: automount
-          image: {{ .Values.nodeplugin.automount.image.repository }}:{{ .Values.nodeplugin.automount.image.tag }}
+          image: {{ .Values.nodeplugin.automount.image.repository }}:{{ .Values.nodeplugin.automount.image.tag | default .Chart.AppVersion }}
           command: [/automount-runner]
           args:
             - -v={{ .Values.logVerbosityLevel }}
@@ -121,7 +121,7 @@ spec:
           resources: {{ toYaml . | nindent 12 }}
           {{- end }}
         - name: mountreconciler
-          image: {{ .Values.nodeplugin.mountreconciler.image.repository }}:{{ .Values.nodeplugin.mountreconciler.image.tag }}
+          image: {{ .Values.nodeplugin.mountreconciler.image.repository }}:{{ .Values.nodeplugin.mountreconciler.image.tag | default .Chart.AppVersion }}
           command: [/mount-reconciler]
           args:
             - -v={{ .Values.logVerbosityLevel }}
