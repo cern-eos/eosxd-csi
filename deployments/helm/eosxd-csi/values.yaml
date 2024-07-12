@@ -22,7 +22,7 @@ extraConfigMaps:
       # to retain support for tickets created by cc7 clients.
 
       [libdefaults]
-      permitted_enctypes = arcfour-hmac-md5 aes256-cts-hmac-sha1-96 aes256-cts-hmac-sha384-192 aes128-cts-hmac-sha256-128 aes128-cts-hmac-sha1-96
+      permitted_enctypes = aes256-cts-hmac-sha1-96 aes256-cts-hmac-sha384-192 aes128-cts-hmac-sha256-128 aes128-cts-hmac-sha1-96
 
   eos-csi-dir-etc-auto-master-d:
     # /etc/auto.master.d/eos.autofs
@@ -192,7 +192,7 @@ nodeplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.4.1
+      tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -205,7 +205,7 @@ nodeplugin:
   automount:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.4.1
+      tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -226,7 +226,7 @@ nodeplugin:
   mountreconciler:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.4.1
+      tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
     resources: {}
     # Extra volume mounts to append to nodeplugin's
@@ -239,7 +239,7 @@ nodeplugin:
   registrar:
     image:
       repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
-      tag: v2.5.1
+      tag: v2.10.1
       pullPolicy: IfNotPresent
     resources: {}
 
@@ -300,7 +300,7 @@ controllerplugin:
   plugin:
     image:
       repository: registry.cern.ch/kubernetes/eosxd-csi
-      tag: v1.4.1
+      tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
     resources: {}
     extraVolumeMounts:
@@ -310,8 +310,8 @@ controllerplugin:
   # CSI external-provisioner image and container resources specs.
   provisioner:
     image:
-      repository: k8s.gcr.io/sig-storage/csi-provisioner
-      tag: v3.2.1
+      repository: registry.k8s.io/sig-storage/csi-provisioner
+      tag: v4.0.1
       pullPolicy: IfNotPresent
     resources: {}
 
