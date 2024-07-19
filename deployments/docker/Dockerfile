@@ -41,10 +41,6 @@ LABEL description="EOSxd CSI Plugin" \
       org.opencontainers.image.base.digest="" \
       org.opencontainers.image.base.name=""
 
-# Override the default list of accepted KRB ciphers by adding "arcfour-hmac-md5"
-# to retain support for tickets created by cc7 clients.
-ADD deployments/docker/crypto-policies /etc/krb5.conf.d/crypto-policies
-
-ADD bin/linux-${TARGETARCH}/csi-driver /csi-driver
-ADD bin/linux-${TARGETARCH}/automount-runner /automount-runner
-ADD bin/linux-${TARGETARCH}/mount-reconciler /mount-reconciler
+COPY bin/linux-${TARGETARCH}/csi-driver /csi-driver
+COPY bin/linux-${TARGETARCH}/automount-runner /automount-runner
+COPY bin/linux-${TARGETARCH}/mount-reconciler /mount-reconciler
