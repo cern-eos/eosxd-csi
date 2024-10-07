@@ -12,15 +12,12 @@ extraSecrets:
 # ConfigMap data supports go-template expressions.
 extraConfigMaps:
   # /etc/krb5.conf.d/crypto-policies
-  #
-  # Required to override the default list of accepted KRB ciphers by adding
-  # "arcfour-hmac-md5" to retain support for tickets created by cc7 clients.
   eos-csi-dir-etc-krb5-conf:
     crypto-policies: |
       # Added by EOSxd CSI driver.
-      # Overrides the default list of accepted KRB ciphers by adding "arcfour-hmac-md5"
-      # to retain support for tickets created by cc7 clients.
-
+      # This was initially added to add support for the "arcfour-hmac-md5" KRB
+      # cipher, however this cipher has now been deprecated as of 11/09/2024 at
+      # CERN.
       [libdefaults]
       permitted_enctypes = aes256-cts-hmac-sha1-96 aes256-cts-hmac-sha384-192 aes128-cts-hmac-sha256-128 aes128-cts-hmac-sha1-96
 
@@ -245,11 +242,10 @@ nodeplugin:
 
   # DaemonSet update strategy.
   updateStrategySpec:
-    # When eosxd Node plugin Pod is restarted, all existing eosxd mounts on
-    # that node will break. If the Node plugin DaemonSet needs to be updated,
-    # all Pods that mount eosxd volumes on that node must be restarted (deleted)
-    # too in order to refresh the mounts.
-    type: OnDelete
+    # Prior versions of eosxd-csi had issues whereby restarting the nodeplugin
+    # broke existing mounts (hence this was set to OnDelete). However the use of
+    # the automount reconciliation sidecar allows for stale / broken mounts to be
+    type: RollingUpdate
 
   # Pod-level security context for nodeplugin daemonset.
   podSecurityContext:
