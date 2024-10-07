@@ -13,6 +13,8 @@ spec:
     metadata:
       labels:
         {{- include "eosxd-csi.nodeplugin.metaLabels" .  | nindent 8 }}
+      annotations:
+        checksum/config: {{ .Values.extraConfigMaps | toJson | sha256sum }}
     spec:
       hostPID: true
       hostNetwork: {{ .Values.nodeplugin.hostNetwork }}

@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         {{- include "eosxd-csi.controllerplugin.metaLabels" .  | nindent 8 }}
+      annotations:
+        checksum/config: {{ .Values.extraConfigMaps | toJson | sha256sum }}
     spec:
       {{- with .Values.controllerplugin.podSecurityContext }}
       securityContext: {{ toYaml . | nindent 8 }}
