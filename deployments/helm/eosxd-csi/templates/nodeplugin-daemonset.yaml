@@ -19,7 +19,7 @@ spec:
       hostPID: true
       hostNetwork: {{ .Values.nodeplugin.hostNetwork }}
       dnsPolicy: {{ .Values.nodeplugin.dnsPolicy }}
-      {{- with .Values.controllerplugin.podSecurityContext }}
+      {{- with .Values.nodeplugin.podSecurityContext }}
       securityContext: {{ toYaml . | nindent 8 }}
       {{- end }}
       containers:
