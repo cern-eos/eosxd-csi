@@ -191,7 +191,12 @@ nodeplugin:
       repository: registry.cern.ch/kubernetes/eosxd-csi
       tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
-    resources: {}
+    # Resource usage will vary based on your cluster size, EOS usage and number
+    # of repositories mounted, as such you should adjust accordingly.
+    resources:
+      limits:
+        cpu: 50m
+        memory: 64Mi
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="nodeplugin"].volumeMounts.
     extraVolumeMounts:
@@ -204,7 +209,12 @@ nodeplugin:
       repository: registry.cern.ch/kubernetes/eosxd-csi
       tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
-    resources: {}
+    # Resource usage will vary based on your cluster size, EOS usage and number
+    # of repositories mounted, as such you should adjust accordingly.
+    resources:
+      limits:
+        cpu: 200m
+        memory: 1Gi
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="automount"].volumeMounts.
     extraVolumeMounts:
@@ -225,7 +235,12 @@ nodeplugin:
       repository: registry.cern.ch/kubernetes/eosxd-csi
       tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
-    resources: {}
+    # Resource usage will vary based on your cluster size, EOS usage and number
+    # of repositories mounted, as such you should adjust accordingly.
+    resources:
+      limits:
+        cpu: 50m
+        memory: 64Mi
     # Extra volume mounts to append to nodeplugin's
     # Pod.spec.containers[name="mountreconciler"].volumeMounts.
     extraVolumeMounts:
@@ -238,7 +253,12 @@ nodeplugin:
       repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
       tag: v2.10.1
       pullPolicy: IfNotPresent
-    resources: {}
+    # Resource usage will vary based on your cluster size, EOS usage and number
+    # of repositories mounted, as such you should adjust accordingly.
+    resources:
+      limits:
+        cpu: 50m
+        memory: 64Mi
 
   # DaemonSet update strategy.
   updateStrategySpec:
@@ -298,7 +318,12 @@ controllerplugin:
       repository: registry.cern.ch/kubernetes/eosxd-csi
       tag: "" # If no tag specified default to Chart AppVersion.
       pullPolicy: IfNotPresent
-    resources: {}
+    # Resource usage will vary based on your cluster size, EOS usage and number
+    # of repositories mounted, as such you should adjust accordingly.
+    resources:
+      limits:
+        cpu: 50m
+        memory: 64Mi
     extraVolumeMounts:
       - name: eos-csi-dir-etc-krb5-conf
         mountPath: /etc/krb5.conf.d
@@ -309,7 +334,12 @@ controllerplugin:
       repository: registry.k8s.io/sig-storage/csi-provisioner
       tag: v4.0.1
       pullPolicy: IfNotPresent
-    resources: {}
+    # Resource usage will vary based on your cluster size, EOS usage and number
+    # of repositories mounted, as such you should adjust accordingly.
+    resources:
+      limits:
+        cpu: 50m
+        memory: 64Mi
 
   # Deployment update strategy.
   deploymentStrategySpec:
@@ -378,6 +408,7 @@ automountHostPath: /var/eos
 
 # Number of seconds to wait for automount daemon to start up before exiting.
 automountDaemonStartupTimeout: 10
+
 # Number of seconds of idle time after which an autofs-managed eosxd mount will
 # be unmounted. '0' means never unmount, '-1' leaves automount default option.
 automountDaemonUnmountTimeout: 600
