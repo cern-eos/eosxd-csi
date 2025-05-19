@@ -33,6 +33,7 @@ import (
 type Server struct {
 	nodeID string
 	caps   []*csi.NodeServiceCapability
+	csi.UnimplementedNodeServer
 }
 
 const (
@@ -138,11 +139,11 @@ func (srv *Server) NodeUnpublishVolume(
 	}
 
 	if mntState != mountutils.StNotMounted {
-		if err := makeRecursivePrivateMount(targetPath); err != nil {
+		if err = makeRecursivePrivateMount(targetPath); err != nil {
 			log.Errorf("failed to make %s private mount: %v", targetPath, err)
 		}
 
-		if err := recursiveUnmount(targetPath); err != nil {
+		if err = recursiveUnmount(targetPath); err != nil {
 			return nil, status.Errorf(codes.Internal,
 				"failed to unmount %s: %v", targetPath, err)
 		}

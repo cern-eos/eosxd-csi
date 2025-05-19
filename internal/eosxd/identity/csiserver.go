@@ -20,7 +20,6 @@ import (
 	"context"
 
 	"github.com/cern-eos/eosxd-csi/internal/version"
-
 	"github.com/container-storage-interface/spec/lib/go/csi"
 )
 
@@ -28,6 +27,7 @@ import (
 type Server struct {
 	driverName string
 	caps       []*csi.PluginCapability
+	csi.UnimplementedIdentityServer
 }
 
 var _ csi.IdentityServer = (*Server)(nil)
