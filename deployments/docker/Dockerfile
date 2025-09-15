@@ -15,7 +15,7 @@ RUN dnf install -y \
         autofs \
         cern-eos-autofs \
         cern-eos-autofs-squashfs \
-        eos-fusex-5.3.14 && \
+        eos-fusex-5.3.19 && \
 	dnf clean all && \
     rm -rf \
         /etc/auto.eos.main.misc    \
