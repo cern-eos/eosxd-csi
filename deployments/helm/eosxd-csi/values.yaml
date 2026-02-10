@@ -28,6 +28,11 @@ extraConfigMaps:
     # /etc/auto.master.d/eos.squashfs.autofs
     eos.squashfs.autofs: |
       /eos/squashfs program:/sbin/auto.eos.squashfs
+    # per-letter views under /eos/user and /eos/project
+    eos.user.autofs: |
+      /eos/user /etc/eos/auto.user
+    eos.project.autofs: |
+      /eos/project /etc/eos/auto.project
 
   eos-csi-dir-etc-eos:
     fuse.conf: |
@@ -68,10 +73,6 @@ extraConfigMaps:
       {"name":"web","hostport":"eosmedia.cern.ch","remotemountdir":"/eos/web/","auth":{"ssskeytab":"/etc/eos.keytab"}}
     fuse.workspace.conf: |
       {"name":"workspace","hostport":"eospublic.cern.ch","remotemountdir":"/eos/workspace/","auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.user.conf: |
-      {"name":"user","hostport":"eosuser-fuse.cern.ch","remotemountdir":"/eos/user/","rm-rf-protect-levels":2,"auth":{"ssskeytab":"/etc/eos.keytab"}}
-    fuse.project.conf: |
-      {"name":"project","hostport":"eosproject-fuse.cern.ch","remotemountdir":"/eos/project/","rm-rf-protect-levels":1,"auth":{"ssskeytab":"/etc/eos.keytab"}}
     auto.eos: |
       ams -fstype=eosx,fsname=ams  :eosxd
       atlas -fstype=eosx,fsname=atlas  :eosxd
@@ -79,9 +80,7 @@ extraConfigMaps:
       experiment -fstype=eosx,fsname=experiment  :eosxd
       geant4 -fstype=eosx,fsname=geant4  :eosxd
       lhcb -fstype=eosx,fsname=lhcb  :eosxd
-      project -fstype=eosx,fsname=project  :eosxd
       theory -fstype=eosx,fsname=theory  :eosxd
-      user -fstype=eosx,fsname=user  :eosxd
       web -fstype=eosx,fsname=web  :eosxd
       workspace -fstype=eosx,fsname=workspace  :eosxd
 
@@ -157,6 +156,64 @@ extraConfigMaps:
       project-u -symlink :/eos/project-i02/u
       project-x -symlink :/eos/project-i02/x
       project-z -symlink :/eos/project-i02/z
+
+    # NEW: /etc/eos/auto.user
+    auto.user: |
+      a -symlink :/eos/home-a
+      b -symlink :/eos/home-b
+      c -symlink :/eos/home-c
+      d -symlink :/eos/home-d
+      e -symlink :/eos/home-e
+      f -symlink :/eos/home-f
+      g -symlink :/eos/home-g
+      h -symlink :/eos/home-h
+      i -symlink :/eos/home-i
+      j -symlink :/eos/home-j
+      k -symlink :/eos/home-k
+      l -symlink :/eos/home-l
+      m -symlink :/eos/home-m
+      n -symlink :/eos/home-n
+      o -symlink :/eos/home-o
+      p -symlink :/eos/home-p
+      q -symlink :/eos/home-q
+      r -symlink :/eos/home-r
+      s -symlink :/eos/home-s
+      t -symlink :/eos/home-t
+      u -symlink :/eos/home-u
+      v -symlink :/eos/home-v
+      w -symlink :/eos/home-w
+      x -symlink :/eos/home-x
+      y -symlink :/eos/home-y
+      z -symlink :/eos/home-z
+
+      # NEW: /etc/eos/auto.project
+    auto.project: |
+      a -symlink :/eos/project-a
+      b -symlink :/eos/project-b
+      c -symlink :/eos/project-c
+      d -symlink :/eos/project-d
+      e -symlink :/eos/project-e
+      f -symlink :/eos/project-f
+      g -symlink :/eos/project-g
+      h -symlink :/eos/project-h
+      i -symlink :/eos/project-i
+      j -symlink :/eos/project-j
+      k -symlink :/eos/project-k
+      l -symlink :/eos/project-l
+      m -symlink :/eos/project-m
+      n -symlink :/eos/project-n
+      o -symlink :/eos/project-o
+      p -symlink :/eos/project-p
+      q -symlink :/eos/project-q
+      r -symlink :/eos/project-r
+      s -symlink :/eos/project-s
+      t -symlink :/eos/project-t
+      u -symlink :/eos/project-u
+      v -symlink :/eos/project-v
+      w -symlink :/eos/project-w
+      x -symlink :/eos/project-x
+      y -symlink :/eos/project-y
+      z -symlink :/eos/project-z
 
 # CSI Node plugin DaemonSet configuration.
 # Node plugin handles node-local operations, e.g. mounting and unmounting
