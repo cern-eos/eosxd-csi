@@ -1,5 +1,8 @@
 FROM gitlab-registry.cern.ch/linuxsupport/alma9-base:20250730-2
 
+# Do not use KEYRING for kerberos authentication
+RUN sed -i '/default_ccache_name.*KEYRING/d' /etc/krb5.conf
+
 # Setup EOS repository.
 COPY deployments/docker/eos9al-stable.repo /etc/yum.repos.d/eos9al-stable.repo
 
