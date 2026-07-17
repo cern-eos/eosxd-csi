@@ -58,7 +58,7 @@ jobs:
       - name: Verify gofumpt has been run
         run: |
           set -e
-          go install mvdan.cc/gofumpt@latest
+          go install mvdan.cc/gofumpt@v0.9.2
           gofumpt -l -w .
           if [ ! -z "$(git status --porcelain .)" ]; then
               >&2 echo "Running gofumpt modified source code"
