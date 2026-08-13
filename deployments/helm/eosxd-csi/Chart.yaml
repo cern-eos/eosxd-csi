@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: "v1.4.7"
 description: A Helm chart to deploy the eosxd-CSI Plugin
 name: eosxd-csi
-version: 1.4.7
+version: 1.4.8-rc.0
